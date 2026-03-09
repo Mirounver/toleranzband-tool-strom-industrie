@@ -1,1561 +1,1640 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<title>Toleranzbandrechnung Strom – N-ERGIE</title>
-	<link rel="icon" type="image/png" sizes="64x64" href="N-ERGIE_LOGO_FAVICON.png">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<style>
-:root{
-  --ner-red:#ff0000;
-  --ner-violet:#710c2f;
-  --ner-grey:#565656;
-  --ner-grey-light:#f2f2f2;
-  --ner-text:#1a1a1a;
-}
-
-body{
-  margin:0;
-  font-family:"Frutiger","Segoe UI","Helvetica Neue",Arial,sans-serif;
-  color:var(--ner-text);
-  background:#fff;
-}
-
-.container{
-  max-width:1000px;
-  margin:0 auto;
-  padding:40px 24px 80px;
-}
-.hero{
-  text-align:center;
-  margin-bottom:60px;
-}
-
-.hero img{
-  height:60px;
-  margin-bottom:24px;
-}
-
-.hero h1{
-  margin:0;
-  font-size:32px;
-  color:var(--ner-violet);
-  font-weight:700;
-}
-
-.hero p{
-  margin-top:10px;
-  font-size:15px;
-  color:var(--ner-grey);
-}
-.form,
-.uploadBox{
-  width:100%;
-}
-
-.header{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-
-  border-bottom:3px solid var(--ner-violet);
-  padding-bottom:24px;
-  margin-bottom:32px;
-}
-
-.header img{
-  height:56px;
-  margin-bottom:14px;
-}
-
-.header h1{
-  margin:0;
-  font-size:28px;
-  color:var(--ner-violet);
-  font-weight:700;
-}
-
-.header p{
-  margin:8px 0 0;
-  font-size:14px;
-  color:var(--ner-grey);
-  max-width:720px;
-}
-
-.section{
-  margin-bottom:40px;
-}
-
-.section-card{
-  background:#fff;
-  border-radius:16px;
-   padding:32px 36px; 
-   box-sizing:border-box;
-  box-shadow:0 6px 16px rgba(0,0,0,0.05);
-}
-
-
-.section h2{
-  font-size:20px;
-  color:var(--ner-violet);
-  margin:0 0 16px;
-}
-
-.mode{
-  display:flex;
-  gap:16px;
-  justify-content:center;
-  margin-top:20px;
-}
-
-.mode button{
-  padding:12px 22px;
-  border-radius:30px;
-  border:2px solid #e5e5e5;
-  background:#fff;
-  font-weight:600;
-  cursor:pointer;
-  transition:all .2s ease;
-}
-
-.mode button.active{
-  border-color:var(--ner-red);
-  color:#fff;
-  background:var(--ner-red);
-}
-
-.form{
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap:32px;
-}
-
-.form-group label{
-  display:block;
-  font-size:13px;
-  color:var(--ner-grey);
-  margin-bottom:6px;
-}
-.form-group input,
-.form-group select{
-  width:100%;
-  box-sizing:border-box;
-  padding:12px 14px;
-  font-size:14px;
-  border-radius:8px;
-  border:1px solid #ddd;
-  transition:all .2s ease;
-}
-
-.form-group input:focus,
-.form-group select:focus{
-  border-color:var(--ner-violet);
-  outline:none;
-  box-shadow:0 0 0 3px rgba(113,12,47,0.1);
-}
-
-
-.uploadBox{
-  width:100%;       
-  border:1px dashed #ccc;
-  padding:20px;     
-  background:#fff;
-  border-radius:10px;
-  box-sizing:border-box;
-}
-.uploadBox input[type="file"]{
-  width:100%;
-  box-sizing:border-box;
-}
-
-.uploadBox.dragover{
-  outline:2px dashed var(--ner-red);
-}
-
-.actions{
-  margin-top:32px;
-  display:flex;
-  gap:16px;
-  justify-content:center;
-}
-
-.actions button{
-  padding:12px 20px;
-  font-weight:700;
-  cursor:pointer;
-  border:none;
-}
-.primary{background:var(--ner-red);color:#fff}
-.secondary{background:#e6e6e6}
-
-.result{
-  margin-top:10px;
-}
-
-.kpis{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:32px;
-}
-.kpi span{
-  display:block;
-  font-size:13px;
-  color:var(--ner-grey);
-}
-.kpi strong{
-  font-size:22px;
-}
-
-.status{
-  margin-top:16px;
-  font-weight:700;
-}
-.status.ok{color:#1e8e3e;}  
-.status.low{color:#e67e22;}   
-.status.high{color:#1f5bd8;}  
-.status.warn{color:var(--ner-red)}
-
-.notice{
-  border-left:4px solid var(--ner-violet);
-  padding:12px 16px;
-  font-size:13px;
-  color:var(--ner-grey);
-  margin-top:12px;
-}
-.marker-value.low{
-  background:#e67e22;
-}
-
-.marker-value.ok{
-  background:#1e8e3e;
-}
-
-.marker-value.high{
-  background:#1f5bd8;
-}
-
-.loading{
-  margin-top:10px;
-  font-weight:700;
-  color:var(--ner-violet);
-  display:none;
-}
-.input-error{
-  border:2px solid var(--ner-red) !important;
-}
-
-@media print{
-
-  .mode,
-  #panelA,
-  #panelB,
-  .actions,
-  .section h2,
-  .section:nth-of-type(1),
-  .section:nth-of-type(2)
-  {
-    display:none !important;
-  }
-
-  .pdf-only{
-    display:block !important;
-  }
-
-  body{
-    background:#fff;
-  }
-
-  .result{
-    background:#fff;
-    padding:0;
-    max-width:none;
-  }
-
-  *{
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  .kpis, .kpi, .notice, .status{
-    page-break-inside:avoid;
-  }
-
-  @page{
-    size:A4;
-    margin:15mm;
-  }
-}
-
-
-.legend-grid{
-  margin-top:8px;
-  display:grid;
-  gap:8px;
-  font-size:13px;
-  color:var(--ner-grey);
-}
-
-.badge{
-  display:inline-block;
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  margin-right:8px;
-  vertical-align:middle;
-}
-
-.formula-text{
-  margin-top:8px;
-  font-size:13px;
-  color:#1a1a1a;
-  line-height:1.6;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  white-space: normal;
-}
-
-.formula{
-  margin-top:16px;
-  padding:12px 16px;
-  background:#fff;
-  border-left:4px solid var(--ner-violet);
-  max-width:100%;
-}
-
-.eq{ margin-top:10px; }
-.eq-row{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
-.eq-left{
-  font-size:18px;
-  font-weight:700;
-  color:var(--ner-violet);
-  white-space:nowrap;
-}
-.frac{
-  display:inline-block;
-  text-align:center;
-  font-size:18px;
-  line-height:1.2;
-}
-.frac .num{
-  padding:0 8px 6px;
-  border-bottom:2px solid #111;
-  white-space:nowrap;
-}
-.frac .den{
-  padding-top:6px;
-  white-space:nowrap;
-}
-
-/* Legende */
-.legend{
-  margin-top:12px;
-  padding:12px 16px;
-  background:#fff;
-  border-left:4px solid var(--ner-violet);
-  max-width:100%;
-}
-
-.legend-abbr{
-  margin-top:10px;
-  display:grid;
-  gap:6px;
-  font-size:13px;
-  color:var(--ner-grey);
-}
-
-.abbr-row{
-  display:grid;
-  grid-template-columns: 42px 8px 1fr;
-  align-items:baseline;
-  column-gap:6px;
-}
-
-.abbr-key{
-  font-weight:700;
-  color:var(--ner-violet);
-  white-space:nowrap;
-}
-
-.abbr-eq{
-  text-align:center;
-  color:var(--ner-grey);
-  font-weight:700;
-}
-
-.abbr-val{
-  color:var(--ner-grey);
-}
-.formula-grid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:32px;
-  margin-top:12px;
-}
-
-.formula-grid div{
-  font-size:14px;
-}
-
-.band-wrapper{
-  margin-top:30px;
-}
-
-.band-labels{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  text-align:center;
-  font-size:13px;
-  color:var(--ner-grey);
-  margin-bottom:10px;
-}
-
-.band-labels strong{
-  display:block;
-  font-size:15px;
-  color:var(--ner-violet);
-}
-
-.band{
-  position:relative;
-  height:40px;
-  display:flex;
-  border-radius:6px;
-  background:#ddd;
-}
-
-.band-segment{
-  flex:1;
-}
-
-.band-segment.low{
-  background:#ffe3cc;
-}
-
-.band-segment.mid{
-  background:#dff5e6;
-}
-
-.band-segment.high{
-  background:linear-gradient(
-    to right,
-    #dbe7ff 0%,
-    #dbe7ff 70%,
-    rgba(219,231,255,0.2) 100%
-  );
-}
-
-.band-marker{
-  position:absolute;
-  top:-4px;
-  transform:translateX(-50%);
-  text-align:center;
-}
-
-.band-marker::after{
-  content:"";
-  display:block;
-  width:2px;
-  height:20px;
-  background:currentColor;
-  margin:4px auto 0;
-}
-
-.marker-value{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-
-  min-width:40px;  
-  height:30px;  
-  padding:0 8px;  
-  
-  border-radius:20px; 
-  font-weight:700;
-  font-size:13px;
-  color:#fff;
-  background:var(--ner-violet);
-}
-
-.band-marker.low{ color:#e67e22; }
-.band-marker.ok{  color:#1e8e3e; }
-.band-marker.high{color:#1f5bd8; }
-
-.band-percent{
-  text-align:center;
-  margin-top:8px;
-  font-size:13px;
-  color:var(--ner-grey);
-}
-
-.status-card{
-  background:#fff;
-  border-radius:14px;
-  padding:24px;
-  margin-bottom:28px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.06);
-  border-left:6px solid var(--ner-grey);
-}
-.status-card.low{
-  border-left:6px solid #e67e22;
-  background:#fff7ef;
-}
-
-.status-card.ok{
-  border-left:6px solid #1e8e3e;
-  background:#eefaf2;
-}
-
-.status-card.high{
-  border-left:6px solid #1f5bd8;
-  background:#eef3ff;
-}
-.status-card.warn {
-  border-left-color: var(--ner-red);
-  background: #ffecec;
-}
-
-
-.status-title{
-  font-size:18px;
-  font-weight:700;
-  margin-bottom:16px;
-}
-
-.status-price span{
-  display:block;
-  font-size:13px;
-  color:var(--ner-grey);
-}
-
-.status-price strong{
-  font-size:34px;
-  color:var(--ner-violet);
-}
-.percent-badge{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:20px;
-  font-size:14px;
-  font-weight:700;
-}
-
-.percent-badge.low{
-  background:#ffe3cc;
-  color:#e67e22;
-}
-
-.percent-badge.ok{
-  background:#dff5e6;
-  color:#1e8e3e;
-}
-
-.percent-badge.high{
-  background:#dbe7ff;
-  color:#1f5bd8;
-}
-
-.kpi-cards{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-  gap:20px;
-  margin-bottom:30px;
-}
-
-.kpi-card{
-  background:#fff;
-  border-radius:10px;
-  padding:18px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.05);
-}
-
-.kpi-card span{
-  font-size:13px;
-  color:var(--ner-grey);
-  display:block;
-  margin-bottom:6px;
-}
-
-.kpi-card strong{
-  font-size:22px;
-}
-
-.band-card{
-  background:#fff;
-  border-radius:12px;
-  padding:22px;
-  margin-bottom:28px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.05);
-}
-
-.band-card h3{
-  margin-top:0;
-  margin-bottom:18px;
-  color:var(--ner-violet);
-}
-
-.details-card{
-  background:#fff;
-  border-radius:12px;
-  padding:22px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.05);
-}
-
-.details-card h3{
-  margin-top:0;
-  margin-bottom:16px;
-  color:var(--ner-violet);
-}
-
-</style>
+  <meta charset="utf-8" />
+  <title>Toleranzbandrechnung Strom – N-ERGIE</title>
+  <link rel="icon" type="image/png" sizes="64x64" href="N-ERGIE_LOGO_FAVICON.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root{
+      --ner-red:#ff0000;
+      --ner-violet:#710c2f;
+      --ner-grey:#565656;
+      --ner-grey-light:#f2f2f2;
+      --ner-text:#1a1a1a;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family:"Frutiger","Segoe UI","Helvetica Neue",Arial,sans-serif;
+      color:var(--ner-text);
+      background:#fff;
+    }
+
+    .container{
+      max-width:1000px;
+      margin:0 auto;
+      padding:40px 24px 80px;
+    }
+
+    .form, .uploadBox{ width:100%; }
+
+    .header{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      border-bottom:3px solid var(--ner-violet);
+      padding-bottom:24px;
+      margin-bottom:32px;
+    }
+
+    .header img{
+      height:56px;
+      margin-bottom:14px;
+    }
+
+    .header h1{
+      margin:0;
+      font-size:28px;
+      color:var(--ner-violet);
+      font-weight:700;
+    }
+
+    .header p{
+      margin:8px 0 0;
+      font-size:14px;
+      color:var(--ner-grey);
+      max-width:720px;
+    }
+
+    .section{ margin-bottom:40px; }
+
+    .section-card{
+      background:#fff;
+      border-radius:16px;
+      padding:32px 36px;
+      box-shadow:0 6px 16px rgba(0,0,0,0.05);
+    }
+
+    .section h2{
+      font-size:20px;
+      color:var(--ner-violet);
+      margin:0 0 16px;
+    }
+
+    .mode{
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      margin-top:20px;
+    }
+
+    .mode button{
+      padding:12px 22px;
+      border-radius:30px;
+      border:2px solid #e5e5e5;
+      background:#fff;
+      font-weight:600;
+      cursor:pointer;
+      transition:all .2s ease;
+    }
+
+    .mode button.active{
+      border-color:var(--ner-red);
+      color:#fff;
+      background:var(--ner-red);
+    }
+
+    .form{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:32px;
+    }
+
+    .form-group label{
+      display:block;
+      font-size:13px;
+      color:var(--ner-grey);
+      margin-bottom:6px;
+    }
+
+    .form-group input,
+    .form-group select{
+      width:100%;
+      padding:12px 14px;
+      font-size:14px;
+      border-radius:8px;
+      border:1px solid #ddd;
+      transition:all .2s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus{
+      border-color:var(--ner-violet);
+      outline:none;
+      box-shadow:0 0 0 3px rgba(113,12,47,0.1);
+    }
+
+    .uploadBox{
+      border:1px dashed #ccc;
+      padding:20px;
+      background:#fff;
+      border-radius:10px;
+    }
+
+    .uploadBox input[type="file"]{ width:100%; }
+
+    .uploadBox.dragover{ outline:2px dashed var(--ner-red); }
+
+    .actions{
+      margin-top:32px;
+      display:flex;
+      gap:16px;
+      justify-content:center;
+    }
+
+    .actions button{
+      padding:12px 20px;
+      font-weight:700;
+      cursor:pointer;
+      border:none;
+      border-radius:12px;
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease, background-color .15s ease, border-color .15s ease, color .15s ease;
+    }
+
+    .actions button:not(:disabled):hover,
+    .mode button:not(:disabled):hover{
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.10);
+    }
+
+    .primary{ background:var(--ner-red); color:#fff; }
+    .secondary{ background:#e6e6e6; }
+
+    .primary:not(:disabled):hover{ filter: brightness(0.92); }
+    .secondary:not(:disabled):hover{ background:#dcdcdc; }
+
+    .mode button:not(.active):hover{ border-color: var(--ner-violet); }
+    .mode button.active:not(:disabled):hover{ filter: brightness(0.92); }
+
+    .actions button:focus-visible,
+    .mode button:focus-visible{
+      outline:none;
+      box-shadow: 0 0 0 3px rgba(113,12,47,0.18), 0 10px 20px rgba(0,0,0,0.10);
+    }
+
+    .actions button:disabled,
+    .mode button:disabled{
+      transform:none;
+      box-shadow:none;
+      filter:none;
+    }
+
+    .result{ margin-top:10px; }
+
+    .notice{
+      border-left:4px solid var(--ner-violet);
+      padding:12px 16px;
+      font-size:13px;
+      color:var(--ner-grey);
+      margin-top:12px;
+    }
+
+    .loading{
+      margin-top:10px;
+      font-weight:700;
+      color:var(--ner-violet);
+      display:none;
+    }
+
+    .input-error{ border:2px solid var(--ner-red) !important; }
+
+    .hidden{ display:none !important; }
+    .mt-12{ margin-top:12px; }
+    .mt-24{ margin-top:24px; }
+    .mt-0{ margin-top:0; }
+    .m-0{ margin:0; }
+
+    .helper-text{
+      display:block;
+      color:var(--ner-grey);
+      margin-top:6px;
+      font-size:13px;
+    }
+
+    .required-star{ color:var(--ner-red); }
+
+    .unit-select{
+      padding:10px;
+      border:1px solid #ccc;
+      min-width:320px;
+    }
+
+    .unit-box{ display:none; margin-top:12px; }
+    .unit-label{
+      display:block;
+      font-size:13px;
+      color:var(--ner-grey);
+      margin-bottom:6px;
+    }
+
+    .status-card{
+      background:#fff;
+      border-radius:14px;
+      padding:24px;
+      margin-bottom:28px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.06);
+      border-left:6px solid var(--ner-grey);
+    }
+
+    .status-card.low{  border-left-color:#e67e22; background:#fff7ef; }
+    .status-card.ok{   border-left-color:#1e8e3e; background:#eefaf2; }
+    .status-card.high{ border-left-color:#1f5bd8; background:#eef3ff; }
+    .status-card.warn{ border-left-color:var(--ner-red); background:#ffecec; }
+
+    .status-title{
+      font-size:18px;
+      font-weight:700;
+      margin-bottom:16px;
+    }
+
+    .status-price span{
+      display:block;
+      font-size:13px;
+      color:var(--ner-grey);
+    }
+
+    .status-price strong{
+      font-size:34px;
+      color:var(--ner-violet);
+    }
+
+    .kpi-cards{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap:20px;
+      margin-bottom:30px;
+    }
+
+    .kpi-card{
+      background:#fff;
+      border-radius:10px;
+      padding:18px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .kpi-card span{
+      font-size:13px;
+      color:var(--ner-grey);
+      display:block;
+      margin-bottom:6px;
+    }
+
+    .kpi-card strong{ font-size:22px; }
+
+    .percent-badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:20px;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .percent-badge.low{  background:#ffe3cc; color:#e67e22; }
+    .percent-badge.ok{   background:#dff5e6; color:#1e8e3e; }
+    .percent-badge.high{ background:#dbe7ff; color:#1f5bd8; }
+
+    .band-card{
+      background:#fff;
+      border-radius:12px;
+      padding:22px;
+      margin-bottom:28px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .band-card h3{
+      margin-top:0;
+      margin-bottom:18px;
+      color:var(--ner-violet);
+    }
+
+    .band-wrapper{ margin-top:10px; }
+
+    .band{
+      position:relative;
+      height:40px;
+      display:flex;
+      border-radius:999px;
+      overflow:hidden;
+      background:#ddd;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06), 0 8px 16px rgba(0,0,0,0.06);
+    }
+
+    .band-segment{
+      flex:0 0 auto;
+      flex-basis:33.333%;
+      transition: flex-basis .45s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .band-segment.low{
+      background: linear-gradient(90deg, #ffe3cc 0%, #ffd1b0 100%);
+    }
+
+    .band-segment.mid{
+      background: linear-gradient(90deg, #dff5e6 0%, #cfeedd 100%);
+    }
+
+    .band-segment.high{
+      background: linear-gradient(90deg, #dbe7ff 0%, #cfe0ff 65%, rgba(219,231,255,0.18) 100%);
+    }
+
+    .band-marker{
+      position:absolute;
+      top:-4px;
+      transform:translateX(-50%);
+      text-align:center;
+      transition: left .45s cubic-bezier(0.22, 0.61, 0.36, 1);
+      will-change:left;
+    }
+
+    .band-marker::after{
+      content:"";
+      display:block;
+      width:2px;
+      height:20px;
+      background:currentColor;
+      margin:4px auto 0;
+    }
+
+    .marker-value{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:40px;
+      height:30px;
+      padding:0 8px;
+      border-radius:20px;
+      font-weight:700;
+      font-size:13px;
+      color:#fff;
+      background:var(--ner-violet);
+    }
+
+    .marker-value.low{  background:#e67e22; }
+    .marker-value.ok{   background:#1e8e3e; }
+    .marker-value.high{ background:#1f5bd8; }
+
+    .marker-high{ box-shadow: 0 0 10px red; }
+    .marker-low{  box-shadow: 0 0 10px blue; }
+
+    .band-marker.low{  color:#e67e22; }
+    .band-marker.ok{   color:#1e8e3e; }
+    .band-marker.high{ color:#1f5bd8; }
+
+    .band-percent{
+      text-align:center;
+      margin-top:8px;
+      font-size:13px;
+      color:var(--ner-grey);
+    }
+
+    .band-legend{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:12px;
+    }
+
+    .band-chip{
+      background:#fff;
+      border:1px solid rgba(0,0,0,0.08);
+      border-radius:14px;
+      padding:10px 12px;
+      text-align:center;
+      box-shadow:0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .band-chip-title{
+      font-weight:400;
+      font-size:15px;
+      line-height:1.2;
+    }
+
+    .band-chip-sub{
+      margin-top:4px;
+      color:var(--ner-grey);
+      font-size:13px;
+      line-height:1.2;
+    }
+
+    .band-chip.low{  border-left:6px solid #e67e22; }
+    .band-chip.ok{   border-left:6px solid #1e8e3e; }
+    .band-chip.high{ border-left:6px solid #1f5bd8; }
+
+    .band-chip.low  .band-chip-title{ color:#e67e22; }
+    .band-chip.ok   .band-chip-title{ color:#1e8e3e; }
+    .band-chip.high .band-chip-title{ color:#1f5bd8; }
+
+    .band-chip.active{
+      box-shadow:0 0 0 3px rgba(113,12,47,0.12), 0 10px 20px rgba(0,0,0,0.08);
+      transform: translateY(-1px);
+    }
+
+    .details-card{
+      background:#fff;
+      border-radius:12px;
+      padding:22px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .details-card h3{
+      margin-top:0;
+      margin-bottom:16px;
+      color:var(--ner-violet);
+    }
+
+    .eq{ margin-top:10px; }
+    .eq-row{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .eq-left{
+      font-size:18px;
+      font-weight:700;
+      color:var(--ner-violet);
+      white-space:nowrap;
+    }
+
+    .frac{
+      display:inline-block;
+      text-align:center;
+      font-size:18px;
+      line-height:1.2;
+    }
+
+    .frac .num{
+      padding:0 8px 6px;
+      border-bottom:2px solid #111;
+      white-space:nowrap;
+    }
+
+    .frac .den{
+      padding-top:6px;
+      white-space:nowrap;
+    }
+
+    .legend{
+      margin-top:12px;
+      padding:12px 16px;
+      background:#fff;
+      border-left:4px solid var(--ner-violet);
+      max-width:100%;
+    }
+
+    .legend-abbr{
+      margin-top:10px;
+      display:grid;
+      gap:6px;
+      font-size:13px;
+      color:var(--ner-grey);
+    }
+
+    .abbr-row{
+      display:grid;
+      grid-template-columns: 42px 8px 1fr;
+      align-items:baseline;
+      column-gap:6px;
+    }
+
+    .abbr-key{
+      font-weight:700;
+      color:var(--ner-violet);
+      white-space:nowrap;
+    }
+
+    .abbr-eq{
+      text-align:center;
+      color:var(--ner-grey);
+      font-weight:700;
+    }
+
+    .abbr-val{ color:var(--ner-grey); }
+
+    .formula-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:32px;
+      margin-top:12px;
+    }
+
+    .formula-grid div{ font-size:14px; }
+
+    .tb-control{
+      display:grid;
+      gap:10px;
+    }
+
+    .tb-slider{
+      width:100%;
+      height:6px;
+      border-radius:999px;
+      background:#e6e6e6;
+      outline:none;
+      cursor:pointer;
+      -webkit-appearance:none;
+      appearance:none;
+    }
+
+    .tb-slider::-webkit-slider-thumb{
+      -webkit-appearance:none;
+      appearance:none;
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      background:var(--ner-red);
+      border:2px solid #fff;
+      box-shadow:0 8px 16px rgba(0,0,0,0.14);
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+
+    .tb-slider:hover::-webkit-slider-thumb{
+      transform: scale(1.05);
+      box-shadow:0 10px 20px rgba(0,0,0,0.18);
+    }
+
+    .tb-slider::-moz-range-thumb{
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      background:var(--ner-red);
+      border:2px solid #fff;
+      box-shadow:0 8px 16px rgba(0,0,0,0.14);
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+
+    @media (max-width: 768px){
+      .container{ padding:24px 16px 48px; }
+      .section-card{ padding:20px 16px; }
+      .form{ grid-template-columns: 1fr; gap:16px; }
+      .mode{ flex-direction:column; align-items:stretch; gap:10px; }
+      .mode button{ width:100%; }
+      .actions{ flex-direction:column; align-items:stretch; }
+      .actions button{ width:100%; }
+      .formula-grid{ grid-template-columns:1fr; gap:16px; }
+      .unit-select{ min-width:0; width:100%; }
+      .band-legend{ grid-template-columns:1fr; }
+    }
+
+    @media print{
+      .mode,
+      #panelA,
+      #panelB,
+      .actions,
+      .section h2,
+      .section:nth-of-type(1),
+      .section:nth-of-type(2){ display:none !important; }
+
+      .tb-slider{ display:none !important; }
+
+      body{ background:#fff; }
+
+      .result{
+        background:#fff;
+        padding:0;
+        max-width:none;
+      }
+
+      *{
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .notice, .status-card, .band-card, .details-card, .kpi-card{
+        page-break-inside: avoid;
+      }
+
+      @page{
+        size:A4;
+        margin:15mm;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<div class="container">
-<div class="header header--center">
-  <img src="N-ERGIE_LOGO_RGB.png" alt="N-ERGIE">
-  <h1>Toleranzbandrechnung Strom Industrie</h1>
-  <p>Berechnung eines angepassten Arbeitspreises auf Basis von Verbrauch und Spotpreis.</p>
-</div>
+  <div class="container">
+    <div class="header header--center">
+      <img src="N-ERGIE_LOGO_RGB.png" alt="N-ERGIE" />
+      <h1>Toleranzbandrechnung Strom Industrie</h1>
+      <p>Berechnung eines angepassten Arbeitspreises auf Basis von Verbrauch und Spotpreis.</p>
+    </div>
 
+    <div class="section">
+      <div class="section-card">
+        <h2>1. Eingabeart</h2>
+        <div class="mode">
+          <button type="button" id="modeA">A: Lastgang</button>
+          <button type="button" id="modeB">B: Jahresverbrauch + Spotpreis</button>
+        </div>
+      </div>
+    </div>
 
-<div class="section">
-<div class="section-card">
-  <h2>1. Eingabeart</h2>
-  <div class="mode">
-    <button type="button" id="modeA">A: Lastgang</button>
-    <button type="button" id="modeB">B: Jahresverbrauch + Spotpreis</button>
+    <div class="section">
+      <div class="section-card">
+        <h2>2. Eingaben</h2>
+
+        <div class="form">
+          <div class="form-group">
+            <label for="partnerNo">Geschäftspartnernummer (optional)</label>
+            <input id="partnerNo" type="text" inputmode="numeric" />
+          </div>
+          <div class="form-group">
+            <label for="company">Firma (optional)</label>
+            <input id="company" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="malo">Marktlokationsnummer (optional)</label>
+            <input id="malo" type="text" inputmode="numeric" />
+          </div>
+          <div class="form-group">
+            <label for="slpMWh">SLP-Menge MWh (optional)</label>
+            <input id="slpMWh" type="number" step="0.01" min="0" />
+            <small class="helper-text">Wird dem Jahresverbrauch hinzugerechnet.</small>
+          </div>
+        </div>
+
+        <div id="panelA" class="mt-24">
+          <div class="uploadBox" id="uploadBoxA">
+            <div class="form-group m-0">
+              <label for="lastgangFile">Lastgang-Datei hochladen (CSV oder Excel) <span class="required-star">*</span></label>
+              <input type="file" id="lastgangFile" accept=".csv,.xlsx,.xls" multiple />
+              <small class="helper-text">15-Minuten-Lastgang für ein vollständiges Kalenderjahr</small>
+
+              <div id="loading" class="loading">Lastgang wird verarbeitet…</div>
+
+              <div id="unitBox" class="unit-box">
+                <label class="unit-label">Einheit des Lastgangs</label>
+                <select id="unitSelect" class="unit-select">
+                  <option value="kWh">kWh (Arbeit je 15 Minuten)</option>
+                  <option value="kW">kW (Leistung je 15 Minuten)</option>
+                </select>
+                <small class="helper-text">Standard: kWh. Falls die Werte in kW sind, bitte umstellen.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="panelB" class="hidden mt-24">
+          <div class="form">
+            <div class="form-group">
+              <label for="sumMWh">Jahresverbrauch (MWh) <span class="required-star">*</span></label>
+              <input id="sumMWh" type="number" step="0.01" min="0" />
+            </div>
+            <div class="form-group">
+              <label for="spot">Durchschnittlicher Spotpreis (€/MWh) <span class="required-star">*</span></label>
+              <input id="spot" type="number" step="0.01" min="0" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form mt-24">
+          <div class="form-group">
+            <label for="contract">Vertragsmenge (MWh) <span class="required-star">*</span></label>
+            <input id="contract" type="number" step="0.01" min="0" />
+          </div>
+          <div class="form-group">
+            <label for="ep">Arbeitspreis (€/MWh) <span class="required-star">*</span></label>
+            <input id="ep" type="number" step="0.01" min="0" />
+          </div>
+        </div>
+
+        <div class="form mt-12">
+          <div class="form-group">
+            <label for="tbLower">Unteres Toleranzband (%) <span class="required-star">*</span></label>
+            <div class="tb-control">
+              <input id="tbLower" type="number" step="0.1" min="0" max="300" value="80" required />
+              <input id="tbLowerRange" class="tb-slider" type="range" min="0" max="300" step="0.1" value="80" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="tbUpper">Oberes Toleranzband (%) <span class="required-star">*</span></label>
+            <div class="tb-control">
+              <input id="tbUpper" type="number" step="0.1" min="0" max="300" value="120" required />
+              <input id="tbUpperRange" class="tb-slider" type="range" min="0" max="300" step="0.1" value="120" />
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="primary" id="calc">Berechnen</button>
+          <button type="button" class="secondary" id="pdf">PDF erstellen</button>
+          <button type="button" class="secondary" id="resetBtn">Zurücksetzen</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-card">
+        <h2>3. Ergebnis</h2>
+
+        <div class="result">
+          <div id="statusCard" class="status-card">
+            <div class="status-title" id="statusTitle">Noch keine Berechnung</div>
+            <div class="status-price">
+              <span>Neuer Arbeitspreis</span>
+              <strong id="rEP">–</strong>
+            </div>
+          </div>
+
+          <div class="kpi-cards">
+            <div class="kpi-card">
+              <span>Jahresverbrauch</span>
+              <strong id="rMWh">–</strong>
+            </div>
+            <div class="kpi-card">
+              <span>Vertragsmenge</span>
+              <strong id="rVM">–</strong>
+            </div>
+            <div class="kpi-card">
+              <span>Spotpreis</span>
+              <strong id="rSpot">–</strong>
+            </div>
+            <div class="kpi-card">
+              <span>Verbrauch in %</span>
+              <strong id="rPercent" class="percent-badge">–</strong>
+            </div>
+          </div>
+
+          <div class="band-card">
+            <h3>Position im Toleranzband</h3>
+
+            <div class="band-wrapper hidden" id="bandWrapper">
+              <div class="band">
+                <div class="band-segment low"></div>
+                <div class="band-segment mid"></div>
+                <div class="band-segment high"></div>
+
+                <div class="band-marker" id="bandMarker">
+                  <div class="marker-value" id="markerValue">–</div>
+                </div>
+              </div>
+
+              <div class="band-percent" id="percentInfo"></div>
+
+              <div class="band-legend" id="bandLegend">
+                <div class="band-chip low" id="chipLow">
+                  <div class="band-chip-title" id="rangeLow">–</div>
+                  <div class="band-chip-sub" id="labelLow">Unterhalb</div>
+                </div>
+
+                <div class="band-chip ok" id="chipMid">
+                  <div class="band-chip-title" id="rangeMid">–</div>
+                  <div class="band-chip-sub" id="labelMid">Innerhalb</div>
+                </div>
+
+                <div class="band-chip high" id="chipHigh">
+                  <div class="band-chip-title" id="rangeHigh">–</div>
+                  <div class="band-chip-sub" id="labelHigh">Oberhalb</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="details-card">
+            <h3>Details zur Berechnung</h3>
+
+            <div id="explanation" class="notice hidden"></div>
+
+            <div id="formulaBox" class="notice hidden">
+              <strong>Verwendete Formel</strong>
+              <div class="formula-grid">
+                <div id="formulaSymbolic"></div>
+                <div id="formulaNumeric"></div>
+              </div>
+            </div>
+
+            <div id="legend" class="legend">
+              <strong>Legende</strong>
+              <div class="legend-abbr">
+                <div class="abbr-row"><div class="abbr-key">EP<sub>U</sub></div><div class="abbr-eq">=</div><div class="abbr-val">neuer Arbeitspreis bei Unterschreitung</div></div>
+                <div class="abbr-row"><div class="abbr-key">EP<sub>O</sub></div><div class="abbr-eq">=</div><div class="abbr-val">neuer Arbeitspreis bei Überschreitung</div></div>
+                <div class="abbr-row"><div class="abbr-key">TB<sub>U</sub></div><div class="abbr-eq">=</div><div class="abbr-val" id="tbUText">0,8 × Vertragsmenge</div></div>
+                <div class="abbr-row"><div class="abbr-key">TB<sub>O</sub></div><div class="abbr-eq">=</div><div class="abbr-val" id="tbOText">1,2 × Vertragsmenge</div></div>
+                <div class="abbr-row"><div class="abbr-key">EP</div><div class="abbr-eq">=</div><div class="abbr-val">Arbeitspreis</div></div>
+                <div class="abbr-row"><div class="abbr-key">AM</div><div class="abbr-eq">=</div><div class="abbr-val">Jahresverbrauch</div></div>
+                <div class="abbr-row"><div class="abbr-key">Spot</div><div class="abbr-eq">=</div><div class="abbr-val">durchschnittlicher Spotpreis</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notice">
+          Hinweis: Modellhafte Berechnung, keine vertraglich verbindliche Abrechnung.
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-</div>
-
-
-<div class="section">
-<div class="section-card">
-  <h2>2. Eingaben</h2>
-
-  <div class="form">
-    <div class="form-group">
-      <label for="partnerNo">Geschäftspartnernummer (optional)</label>
-      <input id="partnerNo" type="text" inputmode="numeric">
-    </div>
-    <div class="form-group">
-      <label for="company">Firma (optional)</label>
-      <input id="company" type="text">
-    </div>
-    <div class="form-group">
-      <label for="malo">Marktlokationsnummer (optional)</label>
-      <input id="malo" type="text" inputmode="numeric">
-    </div>
-    <div class="form-group">
-      <label for="assetName">Anlagename (optional)</label>
-      <input id="assetName" type="text">
-    </div>
-  </div>
-
-  <div id="panelA" style="margin-top:24px">
-   <div class="form">
-    <div class="uploadBox" id="uploadBoxA">
-      <div class="form-group" style="margin:0">
-        <label for="lastgangFile">Lastgang-Datei hochladen (CSV oder Excel) <span style="color:red">*</span></label>
-<input type="file" id="lastgangFile" accept=".csv,.xlsx,.xls" multiple>
-        <small style="display:block;color:#565656;margin-top:6px">
-          15-Minuten-Lastgang für ein vollständiges Kalenderjahr
-        </small>
-
-        <div id="loading" class="loading">Lastgang wird verarbeitet…</div>
-
-        <div id="unitBox" style="display:none; margin-top:12px">
-          <label style="display:block;font-size:13px;color:#565656;margin-bottom:6px">
-            Einheit des Lastgangs
-          </label>
-          <select id="unitSelect" style="padding:10px;border:1px solid #ccc;min-width:320px">
-            <option value="kWh">kWh (Arbeit je 15 Minuten)</option>
-            <option value="kW">kW (Leistung je 15 Minuten)</option>
-          </select>
-          <small style="display:block;margin-top:6px;color:#565656">
-            Automatisch erkannt – bitte prüfen.
-          </small>
-        </div>
-      </div>
-    </div>
-	<div class="form-group">
-  <label for="slpMWh">SLP-Menge MWh (optional)</label>
-  <input id="slpMWh" type="number" step="0.01" min="0">
-  <small style="display:block;color:#565656;margin-top:6px">
-    Wird dem Jahresverbrauch hinzugerechnet.
-  </small>
-</div>
-  </div>
-</div>
-
-  <div id="panelB" style="display:none; margin-top:24px">
-    <div class="form">
-      <div class="form-group">
-        <label for="sumMWh">Jahresverbrauch (MWh) <span style="color:var(--ner-red)">*</span></label>
-        <input id="sumMWh" type="number" step="0.01" min="0">
-      </div>
-      <div class="form-group">
-        <label for="spot">Durchschnittlicher Spotpreis (€/MWh) <span style="color:var(--ner-red)">*</span></label>
-        <input id="spot" type="number" step="0.01" min="0">
-      </div>
-    </div>
-  </div>
-
-  <div class="form" style="margin-top:24px">
-    <div class="form-group">
-      <label for="contract">Vertragsmenge (MWh) <span style="color:var(--ner-red)">*</span></label>
-      <input id="contract" type="number" step="0.01" min="0">
-    </div>
-    <div class="form-group">
-      <label for="ep">Arbeitspreis (€/MWh) <span style="color:var(--ner-red)">*</span></label>
-      <input id="ep" type="number" step="0.01" min="0">
-    </div>
-  </div>
-
-  <div class="actions">
-    <button class="primary" id="calc">Berechnen</button>
-    <button class="secondary" id="pdf">PDF erstellen</button>
-    <button class="secondary" onclick="location.reload()">Zurücksetzen</button>
-  </div>
-</div>
-</div>
-
-<div class="section">
-<div class="section-card">
-  <h2>3. Ergebnis</h2>
-
-  <div class="result">
-
-    <div id="statusCard" class="status-card">
-      <div class="status-title" id="statusTitle">
-        Noch keine Berechnung
-      </div>
-      <div class="status-price">
-        <span>Neuer Arbeitspreis</span>
-        <strong id="rEP">–</strong>
-      </div>
-    </div>
-
-    <div class="kpi-cards">
-
-      <div class="kpi-card">
-        <span>Jahresverbrauch</span>
-        <strong id="rMWh">–</strong>
-      </div>
-
-      <div class="kpi-card">
-        <span>Vertragsmenge</span>
-        <strong id="rVM">–</strong>
-      </div>
-
-      <div class="kpi-card">
-        <span>Spotpreis</span>
-        <strong id="rSpot">–</strong>
-      </div>
-
-      <div class="kpi-card">
-        <span>Verbrauch in %</span>
-        <strong id="rPercent" class="percent-badge">–</strong>
-      </div>
-
-    </div>
-
-    <div class="band-card">
-
-      <h3>Position im Toleranzband</h3>
-
-      <div class="band-wrapper" id="bandWrapper" style="display:none">
-
-        <div class="band-labels">
-          <div>
-            <strong id="rangeLow">–</strong>
-            <span>Unterhalb (&lt; 80%)</span>
-          </div>
-          <div>
-            <strong id="rangeMid">–</strong>
-            <span>Innerhalb (80–120%)</span>
-          </div>
-          <div>
-            <strong id="rangeHigh">–</strong>
-            <span>Oberhalb (&gt; 120%)</span>
-          </div>
-        </div>
-
-        <div class="band">
-          <div class="band-segment low"></div>
-          <div class="band-segment mid"></div>
-          <div class="band-segment high"></div>
-
-          <div class="band-marker" id="bandMarker">
-            <div class="marker-value" id="markerValue">–</div>
-          </div>
-        </div>
-
-        <div class="band-percent" id="percentInfo"></div>
-
-      </div>
-    </div>
-
-    <div class="details-card">
-
-      <h3>Details zur Berechnung</h3>
-
-      <div id="explanation" class="notice" style="display:none"></div>
-
-      <div id="formulaBox" class="notice" style="display:none">
-        <strong>Verwendete Formel</strong>
-        <div class="formula-grid">
-          <div id="formulaSymbolic"></div>
-          <div id="formulaNumeric"></div>
-        </div>
-      </div>
-
-      <div id="legend" class="legend">
-        <strong>Legende</strong>
-        <div class="legend-abbr">
-          <div class="abbr-row"><div class="abbr-key">EP<sub>U</sub></div><div class="abbr-eq">=</div><div class="abbr-val">neuer Arbeitspreis bei Unterschreitung</div></div>
-          <div class="abbr-row"><div class="abbr-key">EP<sub>O</sub></div><div class="abbr-eq">=</div><div class="abbr-val">neuer Arbeitspreis bei Überschreitung</div></div>
-          <div class="abbr-row"><div class="abbr-key">TB<sub>U</sub></div><div class="abbr-eq">=</div><div class="abbr-val">0,8 × Vertragsmenge</div></div>
-          <div class="abbr-row"><div class="abbr-key">TB<sub>O</sub></div><div class="abbr-eq">=</div><div class="abbr-val">1,2 × Vertragsmenge</div></div>
-          <div class="abbr-row"><div class="abbr-key">EP</div><div class="abbr-eq">=</div><div class="abbr-val">Arbeitspreis</div></div>
-          <div class="abbr-row"><div class="abbr-key">AM</div><div class="abbr-eq">=</div><div class="abbr-val">Jahresverbrauch</div></div>
-          <div class="abbr-row"><div class="abbr-key">Spot</div><div class="abbr-eq">=</div><div class="abbr-val">durchschnittlicher Spotpreis</div></div>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
-</div>
-
-<div class="notice">
-  Hinweis: Modellhafte Berechnung, keine vertraglich verbindliche Abrechnung.
-</div>
-
-</div>
-
-<script src="lib/xlsx.full.min.js"></script>
-<script src="spotpreise_2025.js"></script>
-
-<script>
-const requiredFieldsA = ["contract","ep"];
-const requiredFieldsB = ["contract","ep","sumMWh","spot"];
-
-const calcBtn = document.getElementById("calc");
-calcBtn.disabled = true;
-calcBtn.style.opacity = "0.5";
-calcBtn.style.cursor = "not-allowed";
-
-function showWarning(msg){
-  updateStatusCard(msg, "warn");
-  const explanation = document.getElementById("explanation");
-  if (explanation){
-    explanation.style.display = "none";
-    explanation.innerHTML = "";
-  }
-}
-
-function showOkStatus(msg){
-  const explanation = document.getElementById("explanation");
-  explanation.style.display = "block";
-  explanation.innerHTML = msg;
-}
-
-function updateStatusCard(text, cls){
-  const card = document.getElementById("statusCard");
-  const title = document.getElementById("statusTitle");
-  const price = document.getElementById("rEP");
-
-  title.innerHTML = text;
-
-  card.classList.remove("low","ok","high","warn");
-
-  price.style.color = "var(--ner-violet)";
-
-  if(!cls) return;
-
-  card.classList.add(cls);
-
-  if (cls === "low")  price.style.color = "#e67e22";
-  if (cls === "ok")   price.style.color = "#1e8e3e";
-  if (cls === "high") price.style.color = "#1f5bd8";
-  if (cls === "warn") price.style.color = "var(--ner-red)";
-}
-
-
-function reqNumber(value){
-  const n = Number(value);
-  return Number.isFinite(n) && n > 0 ? n : null;
-}
-
-function extractMaloFromText(text){
-  const s = String(text ?? "");
-  const m = s.match(/\b\d{11}\b/);
-  return m ? m[0] : null;
-}
-
-function setLoading(on){
-  const loading = document.getElementById("loading");
-  if (!loading) return;
-  loading.style.display = on ? "block" : "none";
-}
-function setCalcEnabled(enabled){
-  const btn = document.getElementById("calc");
-  btn.disabled = !enabled;
-  btn.style.opacity = enabled ? "1" : "0.5";
-  btn.style.cursor = enabled ? "pointer" : "not-allowed";
-}
-
-function checkModeBReady(){
-
-  const vm = document.getElementById("contract").value;
-  const ep = document.getElementById("ep").value;
-
-  if(mode === "A"){
-    setCalcEnabled(
-      vm > 0 &&
-      ep > 0 &&
-      Number.isFinite(window.totalMWh) &&
-      Number.isFinite(window.spotMarketValue)
-    );
-    return;
-  }
-
-  if(mode === "B"){
-    const am = document.getElementById("sumMWh").value;
-    const spot = document.getElementById("spot").value;
-
-    setCalcEnabled(
-      am > 0 &&
-      spot > 0 &&
-      vm > 0 &&
-      ep > 0
-    );
-  }
-}
-
-["sumMWh","spot","contract","ep"].forEach(id => {
-  const el = document.getElementById(id);
-  if (el){
-    el.addEventListener("input", checkModeBReady);
-  }
-});
-
-console.log("Spotjahr:", typeof SPOT_YEAR !== "undefined" ? SPOT_YEAR : "(nicht geladen)");
-console.log("Spotpreise Anzahl:", Array.isArray(SPOT_PRICES) ? SPOT_PRICES.length : "(nicht geladen)");
-
-let mode = "A";
-
-const modeABtn = document.getElementById("modeA");
-const modeBBtn = document.getElementById("modeB");
-const panelA = document.getElementById("panelA");
-const panelB = document.getElementById("panelB");
-
-modeABtn.classList.add("active");
-
-function clearCommonFields(){
-  document.getElementById("contract").value = "";
-  document.getElementById("ep").value = "";
-}
-function clearOptionalFields(){
-  document.getElementById("partnerNo").value = "";
-  document.getElementById("company").value = "";
-  document.getElementById("malo").value = "";
-  document.getElementById("assetName").value = "";
-}
-
-function clearOptionA(){
-  window.totalMWh = undefined;
-  window.spotMarketValue = undefined;
-
-  const file = document.getElementById("lastgangFile");
-  if (file) file.value = "";
-
-  const slp = document.getElementById("slpMWh");
-  if (slp) slp.value = "";
-
-  document.getElementById("unitBox").style.display = "none";
-}
-
-function clearOptionB(){
-  document.getElementById("sumMWh").value = "";
-  document.getElementById("spot").value = "";
-}
-
-function resetResult(){
-
-  document.getElementById("rMWh").textContent = "–";
-  document.getElementById("rSpot").textContent = "–";
-  document.getElementById("rEP").textContent = "–";
-  document.getElementById("rVM").textContent = "–";
-
-  updateStatusCard("Noch keine Berechnung", null);
-
-  const explanation = document.getElementById("explanation");
-  if (explanation){
-    explanation.style.display = "none";
-    explanation.innerHTML = "";
-  }
-
-  const formulaBox = document.getElementById("formulaBox");
-  if (formulaBox){
-    formulaBox.style.display = "none";
-  }
-
-  const p = document.getElementById("rPercent");
-  if (p){
-    p.classList.remove("low","ok","high");
-    p.textContent = "–";
-  }
-
-  const bandWrapper = document.getElementById("bandWrapper");
-  if (bandWrapper){
-    bandWrapper.style.display = "none";
-  }
-
-  const marker = document.getElementById("markerValue");
-  const markerWrap = document.getElementById("bandMarker");
-
-  if (marker) marker.textContent = "–";
-  if (markerWrap) markerWrap.style.left = "0%";
-
-  const percentInfo = document.getElementById("percentInfo");
-  if (percentInfo) percentInfo.textContent = "";
-const price = document.getElementById("rEP");
-if (price){
-  price.style.color = "var(--ner-violet)";
-}
-const card = document.getElementById("statusCard");
-if (card){
-  card.classList.remove("low","ok","high","warn");
-}
-
-}
-
-modeABtn.onclick = () => {
-  mode = "A";
-  panelA.style.display = "";
-  panelB.style.display = "none";
-  modeABtn.classList.add("active");
-  modeBBtn.classList.remove("active");
-
-  clearOptionB();
-  clearCommonFields();
-  clearOptionalFields();
-
-  resetResult();
-  setCalcEnabled(false);
-};
-
-modeBBtn.onclick = () => {
-  mode = "B";
-  panelB.style.display = "";
-  panelA.style.display = "none";
-  modeBBtn.classList.add("active");
-  modeABtn.classList.remove("active");
-
-  clearOptionA();
-  clearCommonFields();
-  clearOptionalFields();
-
-  resetResult();
-  setCalcEnabled(false);
-};
-
-const lastgangInput = document.getElementById("lastgangFile");
-const uploadBoxA = document.getElementById("uploadBoxA");
-
-if (uploadBoxA && lastgangInput){
-  uploadBoxA.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    uploadBoxA.classList.add("dragover");
-  });
-
-  uploadBoxA.addEventListener("dragleave", () => {
-    uploadBoxA.classList.remove("dragover");
-  });
-
-  uploadBoxA.addEventListener("drop", (e) => {
-    e.preventDefault();
-    uploadBoxA.classList.remove("dragover");
-
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      lastgangInput.files = e.dataTransfer.files;
-      lastgangInput.dispatchEvent(new Event("change"));
-    }
-  });
-}
-
-document.getElementById("calc").onclick = () => {
-document.querySelectorAll(".input-error").forEach(el =>
-  el.classList.remove("input-error")
-);
-
-let hasError = false;
-const fields = mode === "A" ? requiredFieldsA : requiredFieldsB;
-fields.forEach(id => {
-  const el = document.getElementById(id);
-  if (!el) return;
-
-  if (mode === "A" && (id === "sumMWh" || id === "spot")) return;
-
-  if (!el.value || Number(el.value) <= 0) {
-    el.classList.add("input-error");
-    hasError = true;
-  }
-});
-
-if (hasError) {
-  showWarning("Bitte alle Pflichtfelder ausfüllen.");
-  return;
-}
-  const explanation = document.getElementById("explanation");
-  explanation.style.display = "none";
-  explanation.innerHTML = "";
-
-  const VM = reqNumber(document.getElementById("contract").value);
-  const EP_contract = reqNumber(document.getElementById("ep").value);
-
-  if (!VM || !EP_contract){
-    showWarning("Bitte alle Pflichtfelder ausfüllen.");
-    return;
-  }
-
-  let AM = null; 
-  let Spot = null;
-
-if (mode === "A"){
-
-  if (!Number.isFinite(window.totalMWh) || !Number.isFinite(window.spotMarketValue)){
-    showWarning("Lastgang konnte nicht sicher erkannt/ausgewertet werden.<br>Bitte Option B verwenden und Jahresverbrauch + Spotpreis manuell eintragen.");
-    setCalcEnabled(false);
-    return;
-  }
-
-  const slpInput = document.getElementById("slpMWh");
-  const slpValue = slpInput && slpInput.value ? Number(slpInput.value) : 0;
-
-  AM = window.totalMWh + (Number.isFinite(slpValue) ? slpValue : 0);
-  Spot = window.spotMarketValue;
-
-} else {
-
-  AM = reqNumber(document.getElementById("sumMWh").value);
-  Spot = reqNumber(document.getElementById("spot").value);
-
-}
-
-if (!AM || !Spot){
-  showWarning("Bitte alle Pflichtfelder ausfüllen.");
-  return;
-}
-
-  const TBU = 0.8 * VM;
-  const TBO = 1.2 * VM;
-document.getElementById("rVM").textContent =
-  VM.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " MWh";
-const percent = (AM / VM) * 100;
-
-document.getElementById("rPercent").textContent =
-  percent.toLocaleString("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " %";
-
-document.getElementById("percentInfo").textContent =
-  percent.toLocaleString("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) +
-  " % der Vertragsmenge";
-
-const lowMax = TBU;
-const midMin = TBU;
-const midMax = TBO;
-const highMin = TBO;
-
-document.getElementById("rangeLow").textContent =
-  "< " + lowMax.toLocaleString("de-DE",{maximumFractionDigits:2}) + " MWh";
-
-document.getElementById("rangeMid").textContent =
-  midMin.toLocaleString("de-DE",{maximumFractionDigits:2}) +
-  " – " +
-  midMax.toLocaleString("de-DE",{maximumFractionDigits:2}) +
-  " MWh";
-
-document.getElementById("rangeHigh").textContent =
-  "> " + highMin.toLocaleString("de-DE",{maximumFractionDigits:2}) + " MWh";
-
-const bandWrapper = document.getElementById("bandWrapper");
-if (bandWrapper) bandWrapper.style.display = "block";
-
-const markerValue = document.getElementById("markerValue");
-if (markerValue) markerValue.textContent =
-  AM.toLocaleString("de-DE",{minimumFractionDigits:2, maximumFractionDigits:2});
-
-let positionPercent;
-
-const BAND_LOW = 33.33;
-const BAND_MID = 66.66;
-const BAND_HIGH_WIDTH = 33.33;
-
-const MAX_HIGH_FACTOR = 2.0;
-const MAX_HIGH_AM = VM * MAX_HIGH_FACTOR;
-
-if (AM < TBU){
-
-  positionPercent = (AM / TBU) * BAND_LOW;
-
-}
-else if (AM <= TBO){
-
-  positionPercent =
-    BAND_LOW +
-    ((AM - TBU) / (TBO - TBU)) * BAND_HIGH_WIDTH;
-
-}
-else{
-
-  const spanHigh = MAX_HIGH_AM - TBO;
-
-  const ratioHigh =
-    spanHigh > 0
-      ? (AM - TBO) / spanHigh
-      : 1;
-
-  const clampedRatio = Math.max(0, Math.min(ratioHigh, 1));
-
-  positionPercent =
-    BAND_MID +
-    clampedRatio * BAND_HIGH_WIDTH;
-}
-
-positionPercent = Math.max(0, Math.min(positionPercent, 100));
-
-document.getElementById("bandMarker").style.left =
-  positionPercent + "%";
-
-  let newEP = EP_contract;
-  let cls = "ok";
-
-  if (AM < TBU) {
-    newEP = (EP_contract * TBU - 1.1 * Spot * (TBU - AM)) / AM;
-    cls = "low";
-  } else if (AM > TBO) {
-    newEP = (EP_contract * TBO + 0.9 * Spot * (AM - TBO)) / AM;
-    cls = "high";
-  }
-
-const percentEl = document.getElementById("rPercent");
-if (percentEl){
-  percentEl.classList.remove("low","ok","high");
-  percentEl.classList.add(cls);
-}
-
-  document.getElementById("rMWh").textContent =
-    AM.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " MWh";
-
-  document.getElementById("rSpot").textContent =
-    Spot.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €/MWh";
-
-  document.getElementById("rEP").textContent =
-    newEP.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €/MWh";
-
-  const statusText =
-    cls === "low"  ? "Unteres Toleranzband unterschritten" :
-    cls === "high" ? "Oberes Toleranzband überschritten" :
-                     "Verbrauch innerhalb des vereinbarten Toleranzbands";
-
-  updateStatusCard(statusText, cls);
-
-
-explanation.style.display = "block";
-if (cls === "ok") {
-  explanation.innerHTML = `
-    <strong>Warum bleibt mein Arbeitspreis gleich?</strong><br>
-    Ihr tatsächlicher Stromverbrauch liegt innerhalb des vertraglich vereinbarten
-    Toleranzbandes (80 %–120 % der Vertragsmenge).<br>
-    Daher erfolgt keine Anpassung des Arbeitspreises.
-  `;
-} else {
-  explanation.innerHTML = `
-    <strong>Warum ändert sich mein Arbeitspreis?</strong><br>
-    Ihr tatsächlicher Stromverbrauch liegt außerhalb des vertraglich vereinbarten
-    Toleranzbandes (unter 80 % oder über 120 % der Vertragsmenge).<br>
-    Die Abweichung wird mit dem Spotmarktpreis bewertet und gemäß Vertrag im
-    Arbeitspreis berücksichtigt.
-  `;
-}
-
-const formulaBox = document.getElementById("formulaBox");
-
-if (cls === "low") {
-  formulaBox.style.display = "block";
-
-  const TBU = 0.8 * VM;
-
-  document.getElementById("formulaSymbolic").innerHTML = `
-    <div class="eq">
-      <div class="eq-row">
-        <div class="eq-left">EP<sub>U</sub> =</div>
-        <div class="frac">
-          <div class="num">
-            EP × TB<sub>U</sub> − 1,1 × Spot × (TB<sub>U</sub> − AM)
-          </div>
-          <div class="den">AM</div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById("formulaNumeric").innerHTML = `
-    <div class="eq">
-      <div class="eq-row">
-        <div class="eq-left">=</div>
-        <div class="frac">
-          <div class="num">
-            ${EP_contract.toFixed(2)} × ${TBU.toFixed(2)}
-            − 1,1 × ${Spot.toFixed(2)} × (${TBU.toFixed(2)} − ${AM.toFixed(2)})
-          </div>
-          <div class="den">${AM.toFixed(2)}</div>
-        </div>
-      </div>
-    </div>
-  `;
-
-} else if (cls === "high") {
-  formulaBox.style.display = "block";
-
-  const TBO = 1.2 * VM;
-
-  document.getElementById("formulaSymbolic").innerHTML = `
-    <div class="eq">
-      <div class="eq-row">
-        <div class="eq-left">EP<sub>O</sub> =</div>
-        <div class="frac">
-          <div class="num">
-            EP × TB<sub>O</sub> + 0,9 × Spot × (AM − TB<sub>O</sub>)
-          </div>
-          <div class="den">AM</div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById("formulaNumeric").innerHTML = `
-    <div class="eq">
-      <div class="eq-row">
-        <div class="eq-left">=</div>
-        <div class="frac">
-          <div class="num">
-            ${EP_contract.toFixed(2)} × ${TBO.toFixed(2)}
-            + 0,9 × ${Spot.toFixed(2)} × (${AM.toFixed(2)} − ${TBO.toFixed(2)})
-          </div>
-          <div class="den">${AM.toFixed(2)}</div>
-        </div>
-      </div>
-    </div>
-  `;
-
-} else {
-
-  formulaBox.style.display = "block";
-
-  document.getElementById("formulaSymbolic").innerHTML = `
-    <div class="eq">
-      <div class="eq-row">
-        <div class="eq-left">EP =</div>
-        <div>EP (keine Anpassung)</div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById("formulaNumeric").innerHTML = `
-    <div class="eq">
-      <div class="eq-row">
-        <div class="eq-left">=</div>
-        <div>${EP_contract.toFixed(2)} €/MWh</div>
-      </div>
-    </div>
-  `;
-}
-
-const marker = document.getElementById("markerValue");
-const markerWrap = document.getElementById("bandMarker");
-
-if (marker && markerWrap){
-  marker.className = "marker-value " + cls;
-markerWrap.className = "band-marker " + cls;
-
-}
-
-document.querySelector(".result").scrollIntoView({ behavior: "smooth" });
-};
-document.getElementById("pdf").onclick = () => {
-  window.print();
-};
-
-if (lastgangInput) {
-lastgangInput.addEventListener("change", async () => {
-
-  resetResult();
-  clearCommonFields();
-  clearOptionB();
-  clearOptionalFields();
-
-  window.totalMWh = undefined;
-  window.spotMarketValue = undefined;
-  setCalcEnabled(false);
-const slp = document.getElementById("slpMWh");
-if (slp) slp.value = "";
-  const unitBox = document.getElementById("unitBox");
-  if (unitBox) unitBox.style.display = "none";
-
-  setLoading(true);
-
-  const files = Array.from(lastgangInput.files);
-  if (!files.length){
-    setLoading(false);
-    return;
-  }
-
-  let totalKWhSum = 0;
-  let totalEuroSum = 0;
-
-  for (const file of files){
-
-    const data = await file.arrayBuffer();
-    const workbook = XLSX.read(data, { type: "array" });
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json(sheet, { defval: null });
-
-    if (rows.length !== 35040) {
-      showWarning("Lastgang konnte nicht sicher erkannt/ausgewertet werden.<br>Bitte Option B verwenden und Jahresverbrauch + Spotpreis manuell eintragen.");
-    }
-
-    let consumptionColumn = null;
-    let bestScore = -Infinity;
-    const sample = rows.slice(20, 500);
-
-    function isMonotonicSequence(nums){
-      if (nums.length < 10) return false;
-      let inc = 0;
-      for (let i = 1; i < nums.length; i++){
-        if (nums[i] === nums[i-1] + 1) inc++;
-      }
-      return inc / (nums.length - 1) > 0.9;
-    }
-
-    function looksLikeDate(nums){
-      const inRange = nums.filter(n => n >= 30000 && n <= 60000).length;
-      return inRange / nums.length > 0.8;
-    }
-
-    Object.keys(rows[0]).forEach(col => {
-
-      const name = String(col).toLowerCase();
-      if (name.includes("datum") || name.includes("zeit") || name.includes("nr")) return;
-
-      const nums = sample.map(r => Number(r[col])).filter(n => Number.isFinite(n));
-      if (nums.length < 50) return;
-      if (looksLikeDate(nums)) return;
-      if (isMonotonicSequence(nums)) return;
-
-      let score = nums.length;
-      const mean = nums.reduce((a,b)=>a+b,0) / nums.length;
-      const variance = nums.reduce((a,b)=>a + Math.pow(b-mean,2),0) / nums.length;
-      score += Math.min(variance, 1e6);
-
-      if (score > bestScore){
-        bestScore = score;
-        consumptionColumn = col;
-      }
-    });
-
-    if (!consumptionColumn){
-      showWarning("Lastgang konnte nicht sicher erkannt/ausgewertet werden.<br>Bitte Option B verwenden und Jahresverbrauch + Spotpreis manuell eintragen.");
-      continue;
-    }
-
-    const consumptionKWh = rows.map((row, i) => {
-      const v = Number(row[consumptionColumn]);
-      return Number.isFinite(v) ? v : 0;
-    });
-
-    if (!Array.isArray(SPOT_PRICES) || SPOT_PRICES.length !== consumptionKWh.length){
-      showWarning("Lastgang konnte nicht sicher erkannt/ausgewertet werden.<br>Bitte Option B verwenden und Jahresverbrauch + Spotpreis manuell eintragen.");
-      continue;
-    }
-
-    const spotCosts = consumptionKWh.map((kWh,i)=>(kWh * SPOT_PRICES[i]) / 1000);
-
-    totalKWhSum += consumptionKWh.reduce((a,b)=>a+b,0);
-    totalEuroSum += spotCosts.reduce((a,b)=>a+b,0);
-  }
-
-  const totalMWh = totalKWhSum / 1000;
-  const spotMarketValue = totalEuroSum / totalMWh;
-
-  if (!Number.isFinite(totalMWh) || totalMWh <= 0){
-    showWarning("Lastgang konnte nicht sicher erkannt/ausgewertet werden.<br>Bitte Option B verwenden und Jahresverbrauch + Spotpreis manuell eintragen.");
-    setLoading(false);
-    return;
-  }
-
-  window.totalMWh = totalMWh;
-  window.spotMarketValue = spotMarketValue;
-
-  showOkStatus("Lastgang erfolgreich verarbeitet.");
-  checkModeBReady();
-  setLoading(false);
-});
-}
-
-function recalcFromUnit() {
-  if (!window._lastgangRows || !window._consumptionColumn) return;
-
-  try{
-    const unitSelect = document.getElementById("unitSelect");
-    const selectedUnit = unitSelect ? unitSelect.value : "kWh";
-
-    const intervalMinutes = window._intervalMinutes || 15;
-    const factor = selectedUnit === "kW"
-      ? (intervalMinutes / 60)
-      : 1;
-
-    const rows = window._lastgangRows;
-    const col = window._consumptionColumn;
-
-    const consumptionKWh = rows.map(r => {
-      const v = Number(r[col]);
-      return Number.isFinite(v) ? v * factor : 0;
-    });
-
-    if (!Array.isArray(SPOT_PRICES) || SPOT_PRICES.length !== consumptionKWh.length){
-      showWarning("Lastgang konnte nicht sicher erkannt/ausgewertet werden.<br>Bitte Option B verwenden und Jahresverbrauch + Spotpreis manuell eintragen.");
-      return;
-    }
-
-    const spotCosts = consumptionKWh.map((kWh,i)=>(kWh * SPOT_PRICES[i]) / 1000);
-
-    const totalKWh = consumptionKWh.reduce((a,b)=>a+b,0);
-    const totalMWh = totalKWh / 1000;
-    const totalEuro = spotCosts.reduce((a,b)=>a+b,0);
-    const spotMarketValue = totalEuro / totalMWh;
-
-    window.totalMWh = totalMWh;
-    window.spotMarketValue = spotMarketValue;
-
-    showOkStatus("Einheit geändert – Werte neu berechnet.");
-    checkModeBReady();
-
-  } catch(err){
-    console.error(err);
-    showWarning("Neuberechnung nach Einheitenwechsel fehlgeschlagen.");
-  }
-}
-</script>
+
+  <script src="lib/xlsx.full.min.js"></script>
+  <script src="spotpreise_2025.js"></script>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const $ = (id) => document.getElementById(id);
+
+      const el = {
+        modeA: $('modeA'),
+        modeB: $('modeB'),
+        panelA: $('panelA'),
+        panelB: $('panelB'),
+
+        partnerNo: $('partnerNo'),
+        company: $('company'),
+        malo: $('malo'),
+        slpMWh: $('slpMWh'),
+
+        sumMWh: $('sumMWh'),
+        spot: $('spot'),
+        contract: $('contract'),
+        ep: $('ep'),
+
+        tbLower: $('tbLower'),
+        tbUpper: $('tbUpper'),
+        tbLowerRange: $('tbLowerRange'),
+        tbUpperRange: $('tbUpperRange'),
+
+        lastgangFile: $('lastgangFile'),
+        uploadBoxA: $('uploadBoxA'),
+        loading: $('loading'),
+        unitBox: $('unitBox'),
+        unitSelect: $('unitSelect'),
+
+        calc: $('calc'),
+        pdf: $('pdf'),
+        resetBtn: $('resetBtn'),
+
+        statusCard: $('statusCard'),
+        statusTitle: $('statusTitle'),
+
+        rMWh: $('rMWh'),
+        rVM: $('rVM'),
+        rSpot: $('rSpot'),
+        rEP: $('rEP'),
+        rPercent: $('rPercent'),
+
+        bandWrapper: $('bandWrapper'),
+        bandMarker: $('bandMarker'),
+        markerValue: $('markerValue'),
+        percentInfo: $('percentInfo'),
+
+        rangeLow: $('rangeLow'),
+        rangeMid: $('rangeMid'),
+        rangeHigh: $('rangeHigh'),
+
+        labelLow: $('labelLow'),
+        labelMid: $('labelMid'),
+        labelHigh: $('labelHigh'),
+
+        chipLow: $('chipLow'),
+        chipMid: $('chipMid'),
+        chipHigh: $('chipHigh'),
+
+        explanation: $('explanation'),
+        formulaBox: $('formulaBox'),
+        formulaSymbolic: $('formulaSymbolic'),
+        formulaNumeric: $('formulaNumeric'),
+
+        tbUText: $('tbUText'),
+        tbOText: $('tbOText')
+      };
+
+      const state = {
+        mode: 'A',
+        totalMWh: undefined,
+        spotMarketValue: undefined
+      };
+
+      const TB_MIN = 0;
+      const TB_MAX = 300;
+
+      const fmt2 = (n) => n.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const fmt1 = (n) => n.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+      const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
+
+      const reqNumber = (v) => {
+        const n = Number(v);
+        return Number.isFinite(n) && n > 0 ? n : null;
+      };
+
+      const parseDraftNumber = (v) => {
+        const s = String(v ?? '').trim();
+        if (s === '' || s === '-' || s === '.' || s.endsWith('.')) return null;
+        const n = Number(s);
+        return Number.isFinite(n) ? n : null;
+      };
+
+      const formatTB = (n) => (Math.round(n * 10) / 10).toFixed(1).replace(/\.0$/, '');
+
+      const extractMaloFromText = (text) => {
+        const s = String(text ?? '');
+        const m = s.match(/\b\d{11}\b/);
+        return m ? m[0] : null;
+      };
+
+      const setLoading = (on) => {
+        if (!el.loading) return;
+        el.loading.style.display = on ? 'block' : 'none';
+      };
+
+      const setCalcEnabled = (enabled) => {
+        el.calc.disabled = !enabled;
+        el.calc.style.opacity = enabled ? '1' : '0.5';
+        el.calc.style.cursor = enabled ? 'pointer' : 'not-allowed';
+      };
+
+      const setPdfEnabled = (enabled) => {
+        if (!el.pdf) return;
+        el.pdf.disabled = !enabled;
+        el.pdf.style.opacity = enabled ? '1' : '0.5';
+        el.pdf.style.cursor = enabled ? 'pointer' : 'not-allowed';
+      };
+
+      const clearInputErrors = () => {
+        document.querySelectorAll('.input-error').forEach(x => x.classList.remove('input-error'));
+      };
+
+      const updateStatusCard = (text, cls) => {
+        el.statusTitle.innerHTML = text;
+        el.statusCard.classList.remove('low','ok','high','warn');
+        el.rEP.style.color = 'var(--ner-violet)';
+
+        if (!cls) return;
+
+        el.statusCard.classList.add(cls);
+        if (cls === 'low')  el.rEP.style.color = '#e67e22';
+        if (cls === 'ok')   el.rEP.style.color = '#1e8e3e';
+        if (cls === 'high') el.rEP.style.color = '#1f5bd8';
+        if (cls === 'warn') el.rEP.style.color = 'var(--ner-red)';
+      };
+
+      const setActiveBandChip = (cls) => {
+        [el.chipLow, el.chipMid, el.chipHigh].forEach(x => x && x.classList.remove('active'));
+        if (cls === 'low')  el.chipLow && el.chipLow.classList.add('active');
+        else if (cls === 'high') el.chipHigh && el.chipHigh.classList.add('active');
+        else el.chipMid && el.chipMid.classList.add('active');
+      };
+
+      const resetBand = () => {
+        if (el.bandWrapper) el.bandWrapper.classList.add('hidden');
+        if (el.markerValue){
+          el.markerValue.textContent = '–';
+          el.markerValue.className = 'marker-value';
+        }
+        if (el.bandMarker){
+          el.bandMarker.style.left = '0%';
+          el.bandMarker.className = 'band-marker';
+        }
+        const segs = document.querySelectorAll('.band-segment');
+        if (segs.length === 3){
+          segs[0].style.flexBasis = '33.333%';
+          segs[1].style.flexBasis = '33.333%';
+          segs[2].style.flexBasis = '33.333%';
+        }
+        if (el.percentInfo) el.percentInfo.textContent = '';
+        setActiveBandChip('ok');
+      };
+
+      const resetDetails = () => {
+        if (el.explanation){
+          el.explanation.classList.add('hidden');
+          el.explanation.innerHTML = '';
+        }
+        if (el.formulaBox) el.formulaBox.classList.add('hidden');
+        if (el.formulaSymbolic) el.formulaSymbolic.innerHTML = '';
+        if (el.formulaNumeric) el.formulaNumeric.innerHTML = '';
+      };
+
+      const resetKPIs = () => {
+        el.rMWh.textContent = '–';
+        el.rSpot.textContent = '–';
+        el.rEP.textContent = '–';
+        el.rVM.textContent = '–';
+        el.rPercent.textContent = '–';
+        el.rPercent.classList.remove('low','ok','high');
+      };
+
+      const showWarning = (msg) => {
+        updateStatusCard(msg, 'warn');
+        resetDetails();
+        resetBand();
+        resetKPIs();
+        setPdfEnabled(false);
+      };
+
+      const showOkStatus = (msg) => {
+        if (!el.explanation) return;
+        el.explanation.classList.remove('hidden');
+        el.explanation.innerHTML = msg;
+      };
+
+      const syncLowerFromInput = (draft=false) => {
+        const n = parseDraftNumber(el.tbLower.value);
+        if (n === null){
+          if (!draft) el.tbLower.value = formatTB(clamp(Number(el.tbLowerRange.value), TB_MIN, TB_MAX));
+          return;
+        }
+        const c = clamp(n, TB_MIN, TB_MAX);
+        el.tbLowerRange.value = String(c);
+        if (!draft) el.tbLower.value = formatTB(c);
+        setPdfEnabled(false);
+        updateCalcButtonState();
+      };
+
+      const syncUpperFromInput = (draft=false) => {
+        const n = parseDraftNumber(el.tbUpper.value);
+        if (n === null){
+          if (!draft) el.tbUpper.value = formatTB(clamp(Number(el.tbUpperRange.value), TB_MIN, TB_MAX));
+          return;
+        }
+        const c = clamp(n, TB_MIN, TB_MAX);
+        el.tbUpperRange.value = String(c);
+        if (!draft) el.tbUpper.value = formatTB(c);
+        setPdfEnabled(false);
+        updateCalcButtonState();
+      };
+
+      const syncLowerFromRange = () => {
+        const c = clamp(Number(el.tbLowerRange.value), TB_MIN, TB_MAX);
+        el.tbLower.value = formatTB(c);
+        setPdfEnabled(false);
+        updateCalcButtonState();
+      };
+
+      const syncUpperFromRange = () => {
+        const c = clamp(Number(el.tbUpperRange.value), TB_MIN, TB_MAX);
+        el.tbUpper.value = formatTB(c);
+        setPdfEnabled(false);
+        updateCalcButtonState();
+      };
+
+      const validateRequiredInputs = () => {
+        clearInputErrors();
+
+        const required = state.mode === 'A'
+          ? ['contract','ep','tbLower','tbUpper']
+          : ['contract','ep','sumMWh','spot','tbLower','tbUpper'];
+
+        let ok = true;
+
+        for (const id of required){
+          const x = $(id);
+          if (!x) continue;
+          const v = Number(x.value);
+          if (!x.value || !Number.isFinite(v) || v <= 0){
+            x.classList.add('input-error');
+            ok = false;
+          }
+        }
+
+        if (!ok){
+          showWarning('Bitte alle Pflichtfelder ausfüllen.');
+          return false;
+        }
+
+        const tbL = Number(el.tbLower.value);
+        const tbU = Number(el.tbUpper.value);
+
+        if (!(tbL > 0 && tbU > 0)){
+          showWarning('Toleranzband muss größer als 0 % sein.');
+          return false;
+        }
+        if (tbL >= tbU){
+          showWarning('Unteres Toleranzband muss kleiner sein als oberes.');
+          return false;
+        }
+        if (tbU > 300){
+          showWarning('Oberes Toleranzband ist unrealistisch hoch.');
+          return false;
+        }
+
+        return true;
+      };
+
+      const getAMAndSpot = () => {
+        if (state.mode === 'A'){
+          if (!Number.isFinite(state.totalMWh) || !Number.isFinite(state.spotMarketValue)){
+            showWarning('Lastgang konnte nicht sicher erkannt/ausgewertet werden.<br>Bitte Option B verwenden und Jahresverbrauch + Spotpreis manuell eintragen.');
+            setCalcEnabled(false);
+            return null;
+          }
+          const slp = el.slpMWh && el.slpMWh.value ? Number(el.slpMWh.value) : 0;
+          const add = Number.isFinite(slp) ? slp : 0;
+          return { AM: state.totalMWh + add, Spot: state.spotMarketValue };
+        }
+
+        const AM = reqNumber(el.sumMWh.value);
+        const Spot = reqNumber(el.spot.value);
+
+        if (!AM || !Spot){
+          showWarning('Bitte alle Pflichtfelder ausfüllen.');
+          return null;
+        }
+
+        return { AM, Spot };
+      };
+
+      const updateCalcButtonState = () => {
+        const vm = reqNumber(el.contract.value);
+        const ep = reqNumber(el.ep.value);
+        const tbL = reqNumber(el.tbLower.value);
+        const tbU = reqNumber(el.tbUpper.value);
+
+        if (!vm || !ep || !tbL || !tbU){
+          setCalcEnabled(false);
+          return;
+        }
+
+        if (state.mode === 'A'){
+          setCalcEnabled(
+            Number.isFinite(state.totalMWh) &&
+            Number.isFinite(state.spotMarketValue)
+          );
+          return;
+        }
+
+        if (state.mode === 'B'){
+          const am = reqNumber(el.sumMWh.value);
+          const sp = reqNumber(el.spot.value);
+          setCalcEnabled(!!am && !!sp);
+          return;
+        }
+
+        setCalcEnabled(false);
+      };
+
+      const resetAll = () => {
+        state.totalMWh = undefined;
+        state.spotMarketValue = undefined;
+
+        if (el.lastgangFile) el.lastgangFile.value = '';
+        if (el.unitBox) el.unitBox.style.display = 'none';
+
+        [el.partnerNo, el.company, el.malo, el.slpMWh, el.sumMWh, el.spot, el.contract, el.ep].forEach(x => {
+          if (x) x.value = '';
+        });
+
+        el.tbLower.value = '80';
+        el.tbUpper.value = '120';
+        el.tbLowerRange.value = '80';
+        el.tbUpperRange.value = '120';
+
+        clearInputErrors();
+        resetDetails();
+        resetBand();
+        resetKPIs();
+        updateStatusCard('Noch keine Berechnung', null);
+        setPdfEnabled(false);
+        setCalcEnabled(false);
+      };
+
+      const setMode = (m) => {
+        state.mode = m;
+
+        if (m === 'A'){
+          el.panelA.classList.remove('hidden');
+          el.panelB.classList.add('hidden');
+          el.modeA.classList.add('active');
+          el.modeB.classList.remove('active');
+
+          if (el.sumMWh) el.sumMWh.value = '';
+          if (el.spot) el.spot.value = '';
+        } else {
+          el.panelB.classList.remove('hidden');
+          el.panelA.classList.add('hidden');
+          el.modeB.classList.add('active');
+          el.modeA.classList.remove('active');
+
+          state.totalMWh = undefined;
+          state.spotMarketValue = undefined;
+          if (el.lastgangFile) el.lastgangFile.value = '';
+          if (el.unitBox) el.unitBox.style.display = 'none';
+        }
+
+        clearInputErrors();
+        resetDetails();
+        resetBand();
+        resetKPIs();
+        updateStatusCard('Noch keine Berechnung', null);
+
+        setPdfEnabled(false);
+        setCalcEnabled(false);
+        updateCalcButtonState();
+      };
+
+      const handleCalc = () => {
+        if (!validateRequiredInputs()) return;
+
+        resetDetails();
+        setPdfEnabled(false);
+
+        const VM = reqNumber(el.contract.value);
+        const EP_contract = reqNumber(el.ep.value);
+        if (!VM || !EP_contract){
+          showWarning('Bitte alle Pflichtfelder ausfüllen.');
+          return;
+        }
+
+        const values = getAMAndSpot();
+        if (!values) return;
+
+        const { AM, Spot } = values;
+
+        const tbLowerPercent = Number(el.tbLower.value);
+        const tbUpperPercent = Number(el.tbUpper.value);
+
+        const TBU = (tbLowerPercent / 100) * VM;
+        const TBO = (tbUpperPercent / 100) * VM;
+
+        el.tbUText.innerText = (tbLowerPercent / 100).toFixed(2).replace('.', ',') + ' × Vertragsmenge';
+        el.tbOText.innerText = (tbUpperPercent / 100).toFixed(2).replace('.', ',') + ' × Vertragsmenge';
+
+        const percent = (AM / VM) * 100;
+
+        el.rVM.textContent = fmt2(VM) + ' MWh';
+        el.rMWh.textContent = fmt2(AM) + ' MWh';
+        el.rSpot.textContent = fmt2(Spot) + ' €/MWh';
+        el.rPercent.textContent = fmt1(percent) + ' %';
+        el.percentInfo.textContent = fmt1(percent) + ' % der Vertragsmenge';
+
+        const lowMax = TBU;
+        const midMin = TBU;
+        const midMax = TBO;
+        const highMin = TBO;
+
+        el.rangeLow.textContent = '< ' + lowMax.toLocaleString('de-DE',{ maximumFractionDigits:2 }) + ' MWh';
+        el.rangeMid.textContent = midMin.toLocaleString('de-DE',{ maximumFractionDigits:2 }) + ' – ' + midMax.toLocaleString('de-DE',{ maximumFractionDigits:2 }) + ' MWh';
+        el.rangeHigh.textContent = '> ' + highMin.toLocaleString('de-DE',{ maximumFractionDigits:2 }) + ' MWh';
+
+        el.labelLow.innerHTML = `Unterhalb (&lt; ${tbLowerPercent}%)`;
+        el.labelMid.innerHTML = `Innerhalb (${tbLowerPercent}–${tbUpperPercent}%)`;
+        el.labelHigh.innerHTML = `Oberhalb (&gt; ${tbUpperPercent}%)`;
+
+        el.bandWrapper.classList.remove('hidden');
+
+        el.markerValue.textContent = fmt2(AM);
+        el.markerValue.className = 'marker-value';
+
+        const MAX_SCALE = Math.max(200, tbUpperPercent * 1.3, percent * 1.1);
+
+        const lowRangePercent  = tbLowerPercent;
+        const midRangePercent  = tbUpperPercent - tbLowerPercent;
+        const highRangePercent = Math.max(0, MAX_SCALE - tbUpperPercent);
+
+        const totalRange = lowRangePercent + midRangePercent + highRangePercent;
+
+        const lowWidth  = (lowRangePercent  / totalRange) * 100;
+        const midWidth  = (midRangePercent  / totalRange) * 100;
+        const highWidth = (highRangePercent / totalRange) * 100;
+
+        const segs = document.querySelectorAll('.band-segment');
+        if (segs.length === 3){
+          segs[0].style.flexBasis = lowWidth + '%';
+          segs[1].style.flexBasis = midWidth + '%';
+          segs[2].style.flexBasis = highWidth + '%';
+        }
+
+        let scaledPercent;
+
+        if (percent <= tbLowerPercent){
+          scaledPercent = (percent / tbLowerPercent) * lowWidth;
+        } else if (percent <= tbUpperPercent){
+          const midRatio = (percent - tbLowerPercent) / (tbUpperPercent - tbLowerPercent);
+          scaledPercent = lowWidth + midRatio * midWidth;
+        } else {
+          const aboveRange = Math.min(percent, MAX_SCALE) - tbUpperPercent;
+          const highRatio = tbUpperPercent < MAX_SCALE ? aboveRange / (MAX_SCALE - tbUpperPercent) : 1;
+          scaledPercent = lowWidth + midWidth + highRatio * highWidth;
+        }
+
+        if (scaledPercent < 0) scaledPercent = 0;
+        if (scaledPercent > 100) scaledPercent = 100;
+
+        el.bandMarker.style.left = scaledPercent + '%';
+
+        let newEP = EP_contract;
+        let cls = 'ok';
+
+        if (AM < TBU){
+          newEP = (EP_contract * TBU - 1.1 * Spot * (TBU - AM)) / AM;
+          cls = 'low';
+        } else if (AM > TBO){
+          newEP = (EP_contract * TBO + 0.9 * Spot * (AM - TBO)) / AM;
+          cls = 'high';
+        }
+
+        el.rEP.textContent = fmt2(newEP) + ' €/MWh';
+
+        el.rPercent.classList.remove('low','ok','high');
+        el.rPercent.classList.add(cls);
+
+        const statusText =
+          cls === 'low'  ? 'Unteres Toleranzband unterschritten' :
+          cls === 'high' ? 'Oberes Toleranzband überschritten' :
+                           'Verbrauch innerhalb des vereinbarten Toleranzbands';
+
+        updateStatusCard(statusText, cls);
+        setActiveBandChip(cls);
+
+        el.markerValue.classList.add(cls);
+        el.bandMarker.className = 'band-marker ' + cls;
+
+        if (scaledPercent <= 0) el.markerValue.classList.add('marker-low');
+        if (scaledPercent >= 100) el.markerValue.classList.add('marker-high');
+
+        el.explanation.classList.remove('hidden');
+        el.explanation.innerHTML = (cls === 'ok')
+          ? `<strong>Warum bleibt mein Arbeitspreis gleich?</strong><br>Ihr tatsächlicher Stromverbrauch liegt innerhalb des vertraglich vereinbarten Toleranzbandes (${tbLowerPercent} %–${tbUpperPercent} % der Vertragsmenge).<br>Daher erfolgt keine Anpassung des Arbeitspreises.`
+          : `<strong>Warum ändert sich mein Arbeitspreis?</strong><br>Ihr tatsächlicher Stromverbrauch liegt außerhalb des vertraglich vereinbarten Toleranzbandes (unter ${tbLowerPercent} % oder über ${tbUpperPercent} % der Vertragsmenge).<br>Die Abweichung wird mit dem Spotmarktpreis bewertet und gemäß Vertrag im Arbeitspreis berücksichtigt.`;
+
+        el.formulaBox.classList.remove('hidden');
+
+        if (cls === 'low'){
+          el.formulaSymbolic.innerHTML = `
+            <div class="eq">
+              <div class="eq-row">
+                <div class="eq-left">EP<sub>U</sub> =</div>
+                <div class="frac">
+                  <div class="num">EP × TB<sub>U</sub> − 1,1 × Spot × (TB<sub>U</sub> − AM)</div>
+                  <div class="den">AM</div>
+                </div>
+              </div>
+            </div>
+          `;
+
+          el.formulaNumeric.innerHTML = `
+            <div class="eq">
+              <div class="eq-row">
+                <div class="eq-left">=</div>
+                <div class="frac">
+                  <div class="num">${EP_contract.toFixed(2)} × ${TBU.toFixed(2)} − 1,1 × ${Spot.toFixed(2)} × (${TBU.toFixed(2)} − ${AM.toFixed(2)})</div>
+                  <div class="den">${AM.toFixed(2)}</div>
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (cls === 'high'){
+          el.formulaSymbolic.innerHTML = `
+            <div class="eq">
+              <div class="eq-row">
+                <div class="eq-left">EP<sub>O</sub> =</div>
+                <div class="frac">
+                  <div class="num">EP × TB<sub>O</sub> + 0,9 × Spot × (AM − TB<sub>O</sub>)</div>
+                  <div class="den">AM</div>
+                </div>
+              </div>
+            </div>
+          `;
+
+          el.formulaNumeric.innerHTML = `
+            <div class="eq">
+              <div class="eq-row">
+                <div class="eq-left">=</div>
+                <div class="frac">
+                  <div class="num">${EP_contract.toFixed(2)} × ${TBO.toFixed(2)} + 0,9 × ${Spot.toFixed(2)} × (${AM.toFixed(2)} − ${TBO.toFixed(2)})</div>
+                  <div class="den">${AM.toFixed(2)}</div>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          el.formulaSymbolic.innerHTML = `
+            <div class="eq">
+              <div class="eq-row">
+                <div class="eq-left">EP =</div>
+                <div>EP (keine Anpassung)</div>
+              </div>
+            </div>
+          `;
+
+          el.formulaNumeric.innerHTML = `
+            <div class="eq">
+              <div class="eq-row">
+                <div class="eq-left">=</div>
+                <div>${EP_contract.toFixed(2)} €/MWh</div>
+              </div>
+            </div>
+          `;
+        }
+
+        setPdfEnabled(true);
+        document.querySelector('.result')?.scrollIntoView({ behavior: 'smooth' });
+      };
+
+      const handleLastgangImport = async () => {
+        resetDetails();
+        resetBand();
+        resetKPIs();
+        updateStatusCard('Noch keine Berechnung', null);
+
+        state.totalMWh = undefined;
+        state.spotMarketValue = undefined;
+        setCalcEnabled(false);
+        setPdfEnabled(false);
+
+        if (el.unitBox) el.unitBox.style.display = 'none';
+
+        const files = Array.from(el.lastgangFile?.files || []);
+        if (!files.length) return;
+
+        setLoading(true);
+
+        try{
+          let totalKWhSum = 0;
+          let totalEuroSum = 0;
+          let validCount = 0;
+
+          for (const file of files){
+            const data = await file.arrayBuffer();
+            const wb = XLSX.read(data, { type:'array' });
+            const sheet = wb.Sheets[wb.SheetNames[0]];
+
+            const d3 = sheet?.['D3'] ? sheet['D3'].v : null;
+            const maloFound = extractMaloFromText(d3);
+            if (maloFound && el.malo) el.malo.value = maloFound;
+
+            const rows = XLSX.utils.sheet_to_json(sheet, { defval: null });
+            if (!rows.length || !rows[0]){
+              continue;
+            }
+
+            if (rows.length < 34000 || rows.length > 36000){
+              continue;
+            }
+
+            const sample = rows.slice(20, 500);
+
+            const isMonotonicSequence = (nums) => {
+              if (nums.length < 10) return false;
+              let inc = 0;
+              for (let i = 1; i < nums.length; i++){
+                if (nums[i] === nums[i-1] + 1) inc++;
+              }
+              return inc / (nums.length - 1) > 0.9;
+            };
+
+            const looksLikeDate = (nums) => {
+              const inRange = nums.filter(n => n >= 30000 && n <= 60000).length;
+              return inRange / nums.length > 0.8;
+            };
+
+            let consumptionColumn = null;
+            let bestScore = -Infinity;
+
+            for (const col of Object.keys(rows[0])){
+              const name = String(col).toLowerCase();
+              if (name.includes('datum') || name.includes('zeit') || name.includes('nr')) continue;
+
+              const nums = sample.map(r => Number(r[col])).filter(n => Number.isFinite(n));
+              if (nums.length < 50) continue;
+              if (looksLikeDate(nums)) continue;
+              if (isMonotonicSequence(nums)) continue;
+
+              const mean = nums.reduce((a,b)=>a+b,0) / nums.length;
+              const variance = nums.reduce((a,b)=>a + Math.pow(b-mean,2),0) / nums.length;
+
+              let score = nums.length + Math.min(variance, 1e6);
+
+              if (score > bestScore){
+                bestScore = score;
+                consumptionColumn = col;
+              }
+            }
+
+            if (!consumptionColumn){
+              continue;
+            }
+
+            const unit = el.unitSelect?.value || 'kWh';
+
+            const consumptionKWh = rows.map(row => {
+              const v = Number(row[consumptionColumn]);
+              if (!Number.isFinite(v)) return 0;
+              return unit === 'kW' ? v * 0.25 : v;
+            });
+
+            if (typeof SPOT_PRICES === 'undefined' || !Array.isArray(SPOT_PRICES) || SPOT_PRICES.length !== consumptionKWh.length){
+              continue;
+            }
+
+            const spotCosts = consumptionKWh.map((kWh,i) => (kWh * SPOT_PRICES[i]) / 1000);
+
+            totalKWhSum += consumptionKWh.reduce((a,b)=>a+b,0);
+            totalEuroSum += spotCosts.reduce((a,b)=>a+b,0);
+            validCount++;
+          }
+
+          const totalMWh = totalKWhSum / 1000;
+          if (!Number.isFinite(totalMWh) || totalMWh <= 0 || validCount === 0){
+            showWarning('Lastgang konnte nicht sicher erkannt/ausgewertet werden.<br>Bitte Option B verwenden und Jahresverbrauch + Spotpreis manuell eintragen.');
+            return;
+          }
+
+          const spotMarketValue = totalEuroSum / totalMWh;
+          if (!Number.isFinite(spotMarketValue) || spotMarketValue <= 0){
+            showWarning('Lastgang konnte nicht sicher erkannt/ausgewertet werden.<br>Bitte Option B verwenden und Jahresverbrauch + Spotpreis manuell eintragen.');
+            return;
+          }
+
+          state.totalMWh = totalMWh;
+          state.spotMarketValue = spotMarketValue;
+
+          if (el.unitBox) el.unitBox.style.display = 'block';
+          showOkStatus('Lastgang erfolgreich verarbeitet.');
+          updateCalcButtonState();
+        } catch (e){
+          showWarning('Datei konnte nicht verarbeitet werden. Bitte Datei prüfen oder Option B verwenden.');
+          setCalcEnabled(false);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      const bind = () => {
+        el.pdf.disabled = true;
+        el.pdf.style.opacity = '0.5';
+        el.pdf.style.cursor = 'not-allowed';
+
+        setCalcEnabled(false);
+        setPdfEnabled(false);
+
+        el.modeA.addEventListener('click', () => setMode('A'));
+        el.modeB.addEventListener('click', () => setMode('B'));
+
+        el.resetBtn.addEventListener('click', () => location.reload());
+
+        el.calc.addEventListener('click', handleCalc);
+        el.pdf.addEventListener('click', () => window.print());
+
+        ['sumMWh','spot','contract','ep','slpMWh'].forEach(id => {
+          const x = $(id);
+          if (!x) return;
+          x.addEventListener('input', () => {
+            setPdfEnabled(false);
+            updateCalcButtonState();
+          });
+        });
+
+        el.tbLowerRange.addEventListener('input', syncLowerFromRange);
+        el.tbUpperRange.addEventListener('input', syncUpperFromRange);
+
+        el.tbLower.addEventListener('input', () => syncLowerFromInput(true));
+        el.tbUpper.addEventListener('input', () => syncUpperFromInput(true));
+
+        el.tbLower.addEventListener('blur',  () => syncLowerFromInput(false));
+        el.tbUpper.addEventListener('blur',  () => syncUpperFromInput(false));
+        el.tbLower.addEventListener('change',() => syncLowerFromInput(false));
+        el.tbUpper.addEventListener('change',() => syncUpperFromInput(false));
+
+        el.tbLowerRange.value = String(clamp(Number(el.tbLower.value || 80), TB_MIN, TB_MAX));
+        el.tbUpperRange.value = String(clamp(Number(el.tbUpper.value || 120), TB_MIN, TB_MAX));
+
+        el.uploadBoxA.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          el.uploadBoxA.classList.add('dragover');
+        });
+
+        el.uploadBoxA.addEventListener('dragleave', () => {
+          el.uploadBoxA.classList.remove('dragover');
+        });
+
+        el.uploadBoxA.addEventListener('drop', (e) => {
+          e.preventDefault();
+          el.uploadBoxA.classList.remove('dragover');
+
+          const files = e.dataTransfer?.files;
+          if (!files || !files.length) return;
+
+          const dt = new DataTransfer();
+          for (const f of files) dt.items.add(f);
+
+          el.lastgangFile.files = dt.files;
+          el.lastgangFile.dispatchEvent(new Event('change', { bubbles:true }));
+        });
+
+        el.lastgangFile.addEventListener('change', handleLastgangImport);
+
+        el.unitSelect.addEventListener('change', () => {
+          if (el.lastgangFile.files && el.lastgangFile.files.length > 0){
+            el.lastgangFile.dispatchEvent(new Event('change', { bubbles:true }));
+          }
+        });
+
+        setMode('A');
+      };
+
+      bind();
+    })();
+  </script>
 </body>
 </html>
-
