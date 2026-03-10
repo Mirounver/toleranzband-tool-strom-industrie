@@ -1217,7 +1217,7 @@
     <div class="header header--center">
       <img src="N-ERGIE_LOGO_RGB.png" alt="N-ERGIE" />
       <h1>Toleranzbandrechnung Strom Industrie</h1>
-      <p>Berechnung eines angepassten Arbeitspreises auf Basis von Verbrauch und Spotpreis</p>
+      <p>Berechnung des neuen Arbeitspreises bei Über- oder Unterschreitung des Mengentoleranzbandes</p>
     </div>
 
     <div class="section">
@@ -1255,7 +1255,7 @@
               SLP-Menge MWh (optional)
               <span class="tooltip-wrap" tabindex="0">
                 i
-                <span class="tooltip-box">Zusätzlicher Verbrauch in MWh. Dieser Wert wird dem Jahresverbrauch hinzuaddiert.</span>
+                <span class="tooltip-box">Zusätzlicher Verbrauch in MWh für SLP-Lieferstellen. Dieser Wert wird dem Jahresverbrauch hinzuaddiert.</span>
               </span>
             </label>
             <input id="slpMWh" type="number" step="0.01" min="0" />
@@ -1267,7 +1267,7 @@
             <div class="upload-hero">
               <div class="upload-icon">⬆</div>
               <div class="upload-copy">
-                <h3>Lastgang-Datei importieren <span class="required-star">*</span></h3>
+                <h3>Lastgang-Datei importieren für den tatsächlichen Jahresverbrauch in 2025 <span class="required-star">*</span></h3>
                 <p>15-Minuten-Lastgang für ein vollständiges Kalenderjahr (CSV oder Excel).</p>
               </div>
             </div>
@@ -1306,7 +1306,7 @@
 
             <div class="form-group">
               <label for="spot" class="label-with-tooltip">
-                Durchschnittlicher Spotpreis (€/MWh) <span class="required-star">*</span>
+                Erwarteter Spotpreis für den tatsächlichen Jahresverbrauch (€/MWh) <span class="required-star">*</span>
               </label>
               <input id="spot" type="number" step="0.01" min="0" />
             </div>
@@ -1343,7 +1343,7 @@
               Unteres Toleranzband (%) <span class="required-star">*</span>
               <span class="tooltip-wrap" tabindex="0">
                 i
-                <span class="tooltip-box">Bis zu diesem Prozentsatz der Vertragsmenge gilt ein Minderverbrauch als tolerierter Bereich.</span>
+                <span class="tooltip-box">Liegt der tatsächliche Jahresverbrauch unter diesem Prozentsatz der Vertragsmenge, ist das vertraglich vereinbarte Toleranzband unterschritten und der Arbeitspreis wird neu berechnet.</span>
               </span>
             </label>
             <div class="tb-control">
@@ -1357,7 +1357,7 @@
               Oberes Toleranzband (%) <span class="required-star">*</span>
               <span class="tooltip-wrap" tabindex="0">
                 i
-                <span class="tooltip-box">Bis zu diesem Prozentsatz der Vertragsmenge gilt ein Mehrverbrauch als tolerierter Bereich.</span>
+                <span class="tooltip-box">Liegt der tatsächliche Jahresverbrauch über diesem Prozentsatz der Vertragsmenge, ist das vertraglich vereinbarte Toleranzband überschritten und der Arbeitspreis wird neu berechnet.</span>
               </span>
             </label>
             <div class="tb-control">
@@ -1408,7 +1408,7 @@
 
           <div class="kpi-cards">
             <div class="kpi-card">
-              <span>Jahresverbrauch</span>
+              <span>tatsächlicher Jahresverbrauch</span>
               <strong id="rMWh">–</strong>
             </div>
 
@@ -1478,14 +1478,14 @@
 
             <div id="legend" class="legend">
               <strong>Legende</strong>
-              <div class="legend-abbr">
+               <div class="legend-abbr">
+			   <div class="abbr-row"><div class="abbr-key">EP</div><div class="abbr-eq">=</div><div class="abbr-val">vertraglich vereinbarte Arbeitspreis</div></div>
                 <div class="abbr-row"><div class="abbr-key">EP<sub>U</sub></div><div class="abbr-eq">=</div><div class="abbr-val">neuer Arbeitspreis bei Unterschreitung</div></div>
                 <div class="abbr-row"><div class="abbr-key">EP<sub>O</sub></div><div class="abbr-eq">=</div><div class="abbr-val">neuer Arbeitspreis bei Überschreitung</div></div>
-                <div class="abbr-row"><div class="abbr-key">TB<sub>U</sub></div><div class="abbr-eq">=</div><div class="abbr-val" id="tbUText">0,8 × Vertragsmenge</div></div>
-                <div class="abbr-row"><div class="abbr-key">TB<sub>O</sub></div><div class="abbr-eq">=</div><div class="abbr-val" id="tbOText">1,2 × Vertragsmenge</div></div>
-                <div class="abbr-row"><div class="abbr-key">EP</div><div class="abbr-eq">=</div><div class="abbr-val">Arbeitspreis</div></div>
-                <div class="abbr-row"><div class="abbr-key">AM</div><div class="abbr-eq">=</div><div class="abbr-val">Jahresverbrauch</div></div>
-                <div class="abbr-row"><div class="abbr-key">Spot</div><div class="abbr-eq">=</div><div class="abbr-val">durchschnittlicher Spotpreis</div></div>
+                <div class="abbr-row"><div class="abbr-key">TB<sub>U</sub></div><div class="abbr-eq">=</div><div class="abbr-val" id="tbUText">Untere Toleranzbandmenge</div></div>
+                <div class="abbr-row"><div class="abbr-key">TB<sub>O</sub></div><div class="abbr-eq">=</div><div class="abbr-val" id="tbOText">Obere Toleranzbandmenge</div></div>
+                <div class="abbr-row"><div class="abbr-key">AM</div><div class="abbr-eq">=</div><div class="abbr-val">tatsächlicher Jahresverbrauch</div></div>
+                <div class="abbr-row"><div class="abbr-key">Spot</div><div class="abbr-eq">=</div><div class="abbr-val">Wert des tatsächlichen Abnahmeprofils am EPEX-Spotmarkt</div></div>
               </div>
             </div>
           </div>
