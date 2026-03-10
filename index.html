@@ -2238,13 +2238,13 @@
         let newEP = EP_contract;
         let cls = 'ok';
 
-        if (AM < TBU){
-          newEP = (EP_contract * TBU - 1.1 * Spot * (TBU - AM)) / AM;
-          cls = 'low';
-        } else if (AM > TBO){
-          newEP = (EP_contract * TBO + 0.9 * Spot * (AM - TBO)) / AM;
-          cls = 'high';
-        }
+if (AM < TBU){
+  newEP = (EP_contract * TBU - 0.9 * Spot * (TBU - AM)) / AM;
+  cls = 'low';
+} else if (AM > TBO){
+  newEP = (EP_contract * TBO + 1.1 * Spot * (AM - TBO)) / AM;
+  cls = 'high';
+}
 
         const delta = newEP - EP_contract;
 
@@ -2284,7 +2284,7 @@
               <div class="eq-row">
                 <div class="eq-left">EP<sub>U</sub> =</div>
                 <div class="frac">
-                  <div class="num">EP × TB<sub>U</sub> − 1,1 × Spot × (TB<sub>U</sub> − AM)</div>
+                  <div class="num">EP × TB<sub>U</sub> − 0,9 × Spot × (TB<sub>U</sub> − AM)</div>
                   <div class="den">AM</div>
                 </div>
               </div>
@@ -2296,7 +2296,7 @@
               <div class="eq-row">
                 <div class="eq-left">=</div>
                 <div class="frac">
-                  <div class="num">${EP_contract.toFixed(2)} × ${TBU.toFixed(2)} − 1,1 × ${Spot.toFixed(2)} × (${TBU.toFixed(2)} − ${AM.toFixed(2)})</div>
+                  <div class="num">${EP_contract.toFixed(2)} × ${TBU.toFixed(2)} − 0,9 × ${Spot.toFixed(2)} × (${TBU.toFixed(2)} − ${AM.toFixed(2)})</div>
                   <div class="den">${AM.toFixed(2)}</div>
                 </div>
               </div>
@@ -2308,7 +2308,7 @@
               <div class="eq-row">
                 <div class="eq-left">EP<sub>O</sub> =</div>
                 <div class="frac">
-                  <div class="num">EP × TB<sub>O</sub> + 0,9 × Spot × (AM − TB<sub>O</sub>)</div>
+                  <div class="num">EP × TB<sub>O</sub> + 1,1 × Spot × (AM − TB<sub>O</sub>)</div>
                   <div class="den">AM</div>
                 </div>
               </div>
@@ -2320,7 +2320,7 @@
               <div class="eq-row">
                 <div class="eq-left">=</div>
                 <div class="frac">
-                  <div class="num">${EP_contract.toFixed(2)} × ${TBO.toFixed(2)} + 0,9 × ${Spot.toFixed(2)} × (${AM.toFixed(2)} − ${TBO.toFixed(2)})</div>
+                  <div class="num">${EP_contract.toFixed(2)} × ${TBO.toFixed(2)} + 1,1 × ${Spot.toFixed(2)} × (${AM.toFixed(2)} − ${TBO.toFixed(2)})</div>
                   <div class="den">${AM.toFixed(2)}</div>
                 </div>
               </div>
